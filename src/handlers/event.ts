@@ -109,8 +109,8 @@ export async function createEvent(event: SubstrateEvent) {
     ? ensuerExtrinsic(event.extrinsic)
     : undefined);
 
+  
   const data = await ensureEvent(event);
-
   const section = event.event.section;
   const method = event.event.method;
   const eventData = getKVData(event.event.data);
