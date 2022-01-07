@@ -1,0 +1,47 @@
+{
+  "name": "cord-subql",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc -b",
+    "test": "jest",
+    "prepack": "rm -rf dist && npm build",
+    "codegen": "./node_modules/.bin/subql codegen",
+    "patch:types": "node scripts/patch-types.js",
+    "start": "./node_modules/.bin/subql-node -f . --local --timeout=512 --batch-size=100 --port=3123"
+  },
+  "files": [
+    "dist",
+    "schema.graphql",
+    "project.yaml"
+  ],
+  "resolutions": {
+    "@polkadot/api": "6.9.2",
+    "@polkadot/hw-ledger": "^7.9.2",
+    "@polkadot/keyring": "^7.9.2",
+    "@polkadot/networks": "^7.9.2",
+    "@polkadot/phishing": "^0.6.452",
+    "@polkadot/rpc-provider": "6.9.2",
+    "@polkadot/types": "6.9.2",
+    "@polkadot/types-known": "6.9.2",
+    "@polkadot/types-support": "6.9.2",
+    "@polkadot/util": "^7.9.2",
+    "@polkadot/util-crypto": "^7.9.2",
+    "@polkadot/wasm-crypto": "^4.4.1",
+    "babel-core": "^7.0.0-bridge.0",
+    "styled-components": "^5.3.1",
+    "typescript": "^4.5.2"
+  },
+  "author": "qwer951123",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@subql/cli": "^0.16.0",
+    "@subql/node": "^0.25.0",
+    "@subql/types": "^0.11.0",
+    "yaml": "^1.10.0"
+  },
+  "dependencies": {
+    "dayjs": "^1.10.6"
+  }
+}

@@ -1,0 +1,94 @@
+type KVData @jsonField {
+  key: String
+  value: String
+  type: String
+}
+
+type Block @entity {
+  id: ID!
+
+  number: BigInt
+  timestamp: Date
+  parentHash: String
+  specVersion: String
+  stateRoot: String
+  extrinsicRoot: String
+
+  extrinsics: [Extrinsic] @derivedFrom(field: "block")
+  events: [Event] @derivedFrom(field: "block")
+}
+
+type Extrinsic @entity {
+  id: ID!
+
+  method: String
+  section: String
+  args: [KVData]
+  signer: Account
+  nonce: BigInt
+  timestamp: Date
+  signature: String
+  tip: String
+  isSigned: Boolean
+  isSuccess: Boolean
+
+  block: Block
+  events: [Event] @derivedFrom(field: "extrinsic")
+  calls: [Call] @derivedFrom(field: "extrinsic")
+}
+
+type Call @entity {
+  id: ID!
+
+  section: String
+  method: String
+  args:[KVData] 
+  timestamp: Date
+  isSuccess: Boolean
+
+  signer: Account
+  extrinsic: Extrinsic
+  parentCall: Call
+
+  calls: [Call] @derivedFrom(field: "parentCall")
+}
+
+type Event @entity {
+  id: ID!
+
+  index: Int
+  section: String
+  method: String
+  data: [KVData]
+
+  timestamp: Date
+  blockNumber: BigInt
+  block: Block
+  extrinsic: Extrinsic
+}
+
+type Account @entity {
+  id: ID!
+
+  txCount: BigInt
+  createAtBlock: Block
+
+  extrinsics: [Extrinsic] @derivedFrom(field: "signer")
+  calls: [Call] @derivedFrom(field: "signer")
+  transferIn: [Transfer] @derivedFrom(field: "to")
+  transferOut: [Transfer] @derivedFrom(field: "from")
+}
+
+type Transfer @entity {
+  id: ID!
+
+  from: Account
+  to: Account
+  amount: String
+  amountInUSD: String
+
+  extrinsic: Extrinsic
+  call: Call
+  timestamp: Date
+  isSuccess: Boolean
+}
