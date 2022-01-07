@@ -5,14 +5,13 @@ import { ensureAccount } from './account'
 import { ensureBlock } from './block'
 import { createCalls } from './call'
 
-export async function ensuerExtrinsic (extrinsic: SubstrateExtrinsic) {
+export async function ensureExtrinsic (extrinsic: SubstrateExtrinsic) {
   const recordId = extrinsic.extrinsic.hash.toString()
 
   let data = await Extrinsic.get(recordId)
 
   if (!data) {
     data = new Extrinsic(recordId)
-
     await data.save()
   }
 
@@ -22,12 +21,20 @@ export async function ensuerExtrinsic (extrinsic: SubstrateExtrinsic) {
 export async function createExtrinsic (extrinsic: SubstrateExtrinsic) {
   const signerAccount = extrinsic.extrinsic.signer.toString()
 
-  const data = await ensuerExtrinsic(extrinsic)
-  const block = await ensureBlock(extrinsic.block)
-  const signer = await ensureAccount(signerAccount)
+  const recordId = extrinsic.extrinsic.hash.toString()
+
+  let data = await Extrinsic.get(recordId)
+  if (!data) {
+      data = new Extrinsic(recordId)
+  }
 
   data.method = extrinsic.extrinsic.method.method 
   data.section = extrinsic.extrinsic.method.section
+  if (data.method === 'set' && data.section === 'timestamp')
+     return null;
+
+  const block = await ensureBlock(extrinsic.block)
+  const signer = await ensureAccount(signerAccount)
 
   data.args = getKVData(extrinsic.extrinsic.args, extrinsic.extrinsic.argsDef)
   data.signerId = signer.id

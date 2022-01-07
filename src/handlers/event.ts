@@ -3,7 +3,7 @@ import { Dispatcher } from "./utils/dispatcher";
 import { ensureBlock } from "./block";
 import { Event } from "../types/models";
 import { getKVData } from "./utils";
-import { ensuerExtrinsic } from "./extrinsic";
+import { ensureExtrinsic } from "./extrinsic";
 import { DispatchedEventData } from "./types";
 // import { updateCrossedKSM } from './summary'
 
@@ -85,7 +85,9 @@ dispatch.batchRegist([
 
 export async function ensureEvent(event: SubstrateEvent) {
   const block = await ensureBlock(event.block);
-
+  if (!block) {
+      return null;
+  }
   const idx = event.idx;
   const recordId = `${block.number}-${idx}`;
 
@@ -97,36 +99,37 @@ export async function ensureEvent(event: SubstrateEvent) {
     data.blockId = block.id;
     data.blockNumber = block.number;
     data.timestamp = block.timestamp;
-
-    await data.save();
   }
 
   return data;
 }
 
 export async function createEvent(event: SubstrateEvent) {
-  const extrinsic = await (event.extrinsic
-    ? ensuerExtrinsic(event.extrinsic)
-    : undefined);
-
-  
   const data = await ensureEvent(event);
+  if (!data)
+      return;
   const section = event.event.section;
   const method = event.event.method;
   const eventData = getKVData(event.event.data);
+
+  if (section === 'system' && method === 'ExtrinsicSuccess')
+     return;
 
   data.section = section;
   data.method = method;
   data.data = eventData;
 
+  const extrinsic = await (event.extrinsic
+    ? ensureExtrinsic(event.extrinsic)
+    : undefined);
+
   if (extrinsic) {
     data.extrinsicId = extrinsic.id;
   }
 
-  console.log("Event: ", `${section}-${data.method}`);
-
+// TODO: once we have separate handling of different events based on section and method, uncomment below
 /*
-  await dispatch.dispatch(`event`, {
+  await dispatch.dispatch(`${section}-${data.method}`, {
     event: data,
     rawEvent: event,
   });
