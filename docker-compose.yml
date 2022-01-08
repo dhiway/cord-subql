@@ -10,12 +10,25 @@ services:
     environment:
       POSTGRES_PASSWORD: postgres
 
+  cord:
+    image: dhiway/cord:7daf20a59131bf672c205033b953c218bcea26d9
+    ports:
+      - 9944:9944
+      - 9933:9933
+    volumes:
+      - .data/cord:/cord/.local/share
+    command:
+      - --dev
+      - --unsafe-ws-external
+      - --unsafe-rpc-external
+
   graphql-engine:
     image: onfinality/subql-query:latest
     ports:
       - 3001:3000
     depends_on:
       - "postgres"
+      - "cord"
     restart: always
     environment:
       DB_USER: postgres
@@ -31,6 +44,7 @@ services:
     image: onfinality/subql-node:latest
     depends_on:
       - "postgres"
+      - "cord"
     restart: always
     environment:
       DB_USER: postgres
@@ -44,4 +58,3 @@ services:
       - -f=/app
       - --subquery-name=cord
       - --migrate
-
