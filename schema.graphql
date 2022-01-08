@@ -96,28 +96,27 @@ type Transfer @entity {
 type Product @entity {
   id: ID!
 
-  creator: String
-  origin: String
-  identifier: String
+  creator: Account
   tx_hash: String
 }
 
 type Store @entity {
   id: ID!
 
-  identity: String
+  ratingGiven: Int
 }
 
 type Listing @entity {
   id: ID!
 
-  identifier: String
-  creator: String
+  tx_hash: String
+  creator: Account
   store: Store
   product: Product
   status: String
   price: Int
   rating: Float
+  ratingGiven: Int
 }
 
 type Buyer @entity {

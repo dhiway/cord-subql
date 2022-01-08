@@ -36,7 +36,7 @@ async function traverExtrinsic(extrinsic: Extrinsic, raw: SubstrateExtrinsic): P
     const args = data.args
 
     if (method === 'set' && section === 'timestamp')
-        return;
+        return null;
     
     const call = new Call(id)
 
