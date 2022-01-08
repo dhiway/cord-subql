@@ -5,12 +5,18 @@ import { AnyCall, DispatchedCallData } from './types'
 import { SubstrateExtrinsic } from "@subql/types";
 import { Dispatcher, getBatchInterruptedIndex, getKVData } from './utils';
 
+import { createProduct, createListing, orderProduct, returnProduct, giveRating, updateStatus } from './product';
+
 const dispatcher = new Dispatcher<DispatchedCallData>()
 
-
 dispatcher.batchRegist([
-//  { key: 'currencies-transfer', handler: createTransferInCurrencies },
-//  { key: 'balances-transferKeepAlive', handler: createTranserInBalances },
+  { key: 'product-create', handler: createProduct },
+  { key: 'product-list', handler:  createListing },
+  { key: 'product-order', handler:  orderProduct },
+  { key: 'product-update', handler:  updateStatus },
+  { key: 'product-orderReturn', handler:  returnProduct },
+  { key: 'product-setStatus', handler:  updateStatus },
+  { key: 'product-rating', handler:  giveRating },
 ])
 
 async function traverExtrinsic(extrinsic: Extrinsic, raw: SubstrateExtrinsic): Promise<Call[]> {
@@ -29,6 +35,9 @@ async function traverExtrinsic(extrinsic: Extrinsic, raw: SubstrateExtrinsic): P
     const section = data.section
     const args = data.args
 
+    if (method === 'set' && section === 'timestamp')
+        return;
+    
     const call = new Call(id)
 
     call.method = method
@@ -48,12 +57,10 @@ async function traverExtrinsic(extrinsic: Extrinsic, raw: SubstrateExtrinsic): P
 
     list.push(call)
 
-    /*
     await dispatcher.dispatch(
       `${call.section}-${call.method}`,
       { call, extrinsic, rawCall: data, rawExtrinsic: raw }
     )
-    */
     console.log("Call ", `${call.section}-${call.method}`, call, data);
     if (depth < 1 && section === 'utility' && (method === 'batch' || method === 'batchAll')) {
       const temp = args[0] as unknown as Vec<AnyCall>

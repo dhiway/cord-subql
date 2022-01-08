@@ -14,3 +14,17 @@ export {Account} from "./Account"
 
 export {Transfer} from "./Transfer"
 
+export {Product} from "./Product"
+
+export {Store} from "./Store"
+
+export {Listing} from "./Listing"
+
+export {Buyer} from "./Buyer"
+
+export {Order} from "./Order"
+
+export {Return} from "./Return"
+
+export {Rating} from "./Rating"
+

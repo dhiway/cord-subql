@@ -92,3 +92,63 @@ type Transfer @entity {
   timestamp: Date
   isSuccess: Boolean
 }
+
+type Product @entity {
+  id: ID!
+
+  creator: String
+  origin: String
+  identifier: String
+  tx_hash: String
+}
+
+type Store @entity {
+  id: ID!
+
+  identity: String
+}
+
+type Listing @entity {
+  id: ID!
+
+  identifier: String
+  creator: String
+  store: Store
+  product: Product
+  status: String
+  price: Int
+  rating: Float
+}
+
+type Buyer @entity {
+  id: ID!
+
+  identifier: String
+  score: Int
+}
+
+type Order @entity {
+  id: ID!
+
+  product: Product
+  store: Store
+  buyer: Buyer
+}
+
+type Return @entity {
+  id: ID!
+
+  store: Store
+  product: Product
+  order: Order
+  buyer: Buyer
+}
+
+type Rating @entity {
+  id: ID!
+
+  product: Product
+  store: Store
+  buyer: Buyer
+  rating: Int
+}
