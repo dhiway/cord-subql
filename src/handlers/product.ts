@@ -25,16 +25,17 @@ export async function createProduct ({ call, extrinsic, rawCall }: DispatchedCal
 }
 
 export async function createListing ({ call, extrinsic, rawCall }: DispatchedCallData) {
-    const args = call.args
+    const args = rawCall.args
 
     await ensureCallExist(call.id)
 
-    let listId = args[0].value
-    let creator = args[1].value
-    let txHash= args[2].value
-    let storeId = args[3].value
+    const prodId = (args[7] as any).toString()
+    const creator = (args[1] as any).toString()
+    const txHash = (args[2] as any).toString()
+    const listId = (args[0] as any).toString()
+    const storeId = (args[3] as any).toString()
+    const price = Number(args[4] as any)
     let price = Number(args[4].value)
-    let prodId = args[6].value
 
     if (!listId || !prodId || !storeId || !creator)
        return;
