@@ -20,6 +20,7 @@ export class Dispatcher<DispatchData> {
 
     if (!handlers) return
 
+    logger.info(data)
     await Promise.all(handlers.map((handler) => handler(data))).catch((e) => {
       logger.info(e.stack.toString())
 

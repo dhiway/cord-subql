@@ -36,8 +36,8 @@ async function traverExtrinsic(extrinsic: Extrinsic, raw: SubstrateExtrinsic): P
     const args = data.args
 
     if (method === 'set' && section === 'timestamp')
-        return null;
-    
+	return null;
+
     const call = new Call(id)
 
     call.method = method
@@ -57,16 +57,29 @@ async function traverExtrinsic(extrinsic: Extrinsic, raw: SubstrateExtrinsic): P
 
     list.push(call)
 
+    let key = `${call.section}-${call.method}`;
+    if ( key === 'product-create') {
+       await createProduct ({call, extrinsic, rawCall: data, rawExtrinsic: raw});
+    } else if (key === 'product-list') {
+      await createListing({call, extrinsic, rawCall: data, rawExtrinsic: raw});
+      } else if (key === 'product-order') { await  orderProduct({call, extrinsic, rawCall: data, rawExtrinsic: raw}); }
+       else if (key === 'product-update') { await  updateStatus({call, extrinsic, rawCall: data, rawExtrinsic: raw}); }
+       else if (key === 'product-orderReturn') { await  returnProduct({call, extrinsic, rawCall: data, rawExtrinsic: raw}); }
+       else if (key === 'product-setStatus') { await  updateStatus({call, extrinsic, rawCall: data, rawExtrinsic: raw}); }
+       else if (key === 'product-rating') { await  giveRating({call, extrinsic, rawCall: data, rawExtrinsic: raw}); }
+
+/*
     await dispatcher.dispatch(
       `${call.section}-${call.method}`,
       { call, extrinsic, rawCall: data, rawExtrinsic: raw }
     )
-    console.log("Call ", `${call.section}-${call.method}`, call, data);
+*/
+
     if (depth < 1 && section === 'utility' && (method === 'batch' || method === 'batchAll')) {
       const temp = args[0] as unknown as Vec<AnyCall>
 
       await Promise.all(temp.map((item, idx) => inner(item, id, idx, false, depth + 1)))
-    } 
+    }
   }
 
   await inner(raw.extrinsic.method, extrinsic.id, 0, true, 0)
