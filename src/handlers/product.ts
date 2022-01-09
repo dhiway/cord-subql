@@ -13,8 +13,11 @@ export async function createProduct ({ call, extrinsic, rawCall }: DispatchedCal
     const prodId = (args[0] as any).toString()
     const creator = (args[1] as any).toString()
     const txHash = (args[2] as any).toString()
-    let account = await ensureAccount(creator);
 
+    if (!prodId || !creator)
+       return;
+
+    let account = await ensureAccount(creator);
     const product = new Product(prodId)
     product.tx_hash = txHash;
     product.creatorId = account.id
@@ -33,8 +36,9 @@ export async function createListing ({ call, extrinsic, rawCall }: DispatchedCal
     let price = Number(args[4].value)
     let prodId = args[6].value
 
-    if (!prodId)
+    if (!listId || !prodId || !storeId || !creator)
        return;
+
     const product = await Product.get(prodId)
     if (!product) {
         logger.info(`${prodId}`)
@@ -67,17 +71,20 @@ export async function orderProduct ({ call, extrinsic, rawCall }: DispatchedCall
     
     let orderId = args[0].value
     let txHash = args[2].value
+    const buyerId = args[1].value
+    const storeId = args[4].value
+    if (!orderId || !txHash || !buyerId || !storeId)
+       return;
+    
     const product = await Product.get(txHash)
     if (!product)
 	return;
 
-    const buyerId = args[1].value
     let buyer = await Buyer.get(buyerId)
     if (!buyer) {
 	buyer = new Buyer(buyerId)
 	buyer.save()
     }
-    const storeId = args[4].value
     let store = await Store.get(buyerId)
     if (!store) {
         return
@@ -98,12 +105,14 @@ export async function returnProduct ({ call, extrinsic, rawCall }: DispatchedCal
 
     await ensureCallExist(call.id)
 
+    const buyerId = args[1].value
     let orderId = args[0].value
+    if (!orderId || buyerId)
+	return
     const order = await Order.get(orderId)
     if (!order)
 	return;
 
-    const buyerId = args[1].value
     const buyer = await Buyer.get(buyerId)
     if (!buyer) {
 	return;
@@ -126,13 +135,17 @@ export async function giveRating ({ call, extrinsic, rawCall }: DispatchedCallDa
 
     let ratingId = args[0].value
     let orderId = args[7].value
+    const buyerId = args[1].value
+
+    if (!orderId || !ratingId || !buyerId)
+	return
+
     const order = await Order.get(orderId)
     if (!order) {
         logger.info("No order found");
 	//return;
     }
 
-    const buyerId = args[1].value
     const buyer = await Buyer.get(buyerId)
     if (!buyer) {
         logger.info("No buyer found");
@@ -158,6 +171,9 @@ export async function updateStatus ({ call, extrinsic, rawCall }: DispatchedCall
     await ensureCallExist(call.id)
 
     let listId = args[0].value
+    if (!listId)
+	return;
+    
     const listing = await Listing.get(listId)
     if (!listing) {
 	return;
