@@ -98,12 +98,16 @@ type Product @entity {
 
   creator: Account
   tx_hash: String
+  rating: Float
+  totalRating: Int
+  totalOrders: Int
 }
 
 type Store @entity {
   id: ID!
 
-  ratingGiven: Int
+  totalRating: Int
+  totalOrders: Int
 }
 
 type Listing @entity {
@@ -116,13 +120,13 @@ type Listing @entity {
   status: String
   price: Int
   rating: Float
-  ratingGiven: Int
+  totalRating: Int
+  totalOrders: Int
 }
 
 type Buyer @entity {
   id: ID!
 
-  identifier: String
   score: Int
 }
 

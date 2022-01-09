@@ -86,6 +86,11 @@ export async function orderProduct ({ call, extrinsic, rawCall }: DispatchedCall
 	logger.info("Store not found")
         return
     }
+    let product = await Product.get(listing.productId)
+    if (!product) {
+	logger.info("Product not found")
+        return
+    }
     let buyer = await Buyer.get(buyerId)
     if (!buyer) {
 	buyer = new Buyer(buyerId)
@@ -95,6 +100,15 @@ export async function orderProduct ({ call, extrinsic, rawCall }: DispatchedCall
     buyer.score += 1; /* every return is -2, and every order is +1 */
     buyer.save();
 
+    store.totalOrders += 1
+    store.save()
+
+    listing.totalOrders += 1
+    listing.save()
+
+    product.totalOrders += 1
+    product.save()
+    
     const order = new Order(orderId)
     order.buyerId = buyer.id;
     order.listingId = listing.id
@@ -153,12 +167,27 @@ export async function giveRating ({ call, extrinsic, rawCall }: DispatchedCallDa
         logger.info("No buyer found");
 	return;
     }
+    const listing = await Listing.get(order.listingId)
+    const product = await Product.get(listing.productId)
+    const store = await Store.get(listing.storeId)
     const givenRating = Number(args[8] as any)
 
     buyer.score += 1;
     buyer.save()
 
-    
+    let newRating = (product.rating * product.totalRating + givenRating) / (product.totalRating + 1)
+    product.totalRating += 1
+    product.rating = newRating;
+    product.save()
+
+    newRating = (listing.rating * listing.totalRating + givenRating) / (listing.totalRating + 1)
+    listing.totalRating += 1
+    listing.rating = newRating;
+    listing.save()
+
+    store.totalRating += 1
+    store.save()
+
     const rating = new Rating(ratingId);
     rating.buyerId = buyer.id;
     rating.rating = givenRating;
