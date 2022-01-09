@@ -70,13 +70,14 @@ export async function orderProduct ({ call, extrinsic, rawCall }: DispatchedCall
     let orderId = (args[0] as any).toString()
     let txHash = (args[2] as any).toString()
     const buyerId = (args[1] as any).toString()
-    const storeId = (args[4] as any).toString()
+    const storeId = (args[3] as any).toString()
+    const listingId = (args[7] as any).toString()
     
-    if (!orderId || !txHash || !buyerId || !storeId)
+    if (!orderId || !buyerId || !storeId || !listingId)
        return;
     
-    const product = await Product.get(txHash)
-    if (!product)
+    const listing = await Listing.get(listingId)
+    if (!listing)
 	return;
 
     let buyer = await Buyer.get(buyerId)
@@ -94,7 +95,7 @@ export async function orderProduct ({ call, extrinsic, rawCall }: DispatchedCall
 
     const order = new Order(orderId)
     order.buyerId = buyer.id;
-    order.productId = product.id
+    order.listingId = listing.id
     order.storeId = store.id
     await order.save()
 }
@@ -122,7 +123,7 @@ export async function returnProduct ({ call, extrinsic, rawCall }: DispatchedCal
 
     const orderReturn = new Return(call.id)
     orderReturn.buyerId = buyer.id;
-    orderReturn.productId = order.productId
+    orderReturn.listingId = order.listingId
     orderReturn.storeId = order.storeId;
     await orderReturn.save()
 }
@@ -159,7 +160,7 @@ export async function giveRating ({ call, extrinsic, rawCall }: DispatchedCallDa
     const rating = new Rating(ratingId);
     rating.buyerId = buyer.id;
     rating.rating = givenRating;
-    rating.productId = order.productId
+    rating.listingId = order.listingId
     rating.storeId = order.storeId;
     await rating.save()
 }

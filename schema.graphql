@@ -129,7 +129,7 @@ type Buyer @entity {
 type Order @entity {
   id: ID!
 
-  product: Product
+  listing: Listing
   store: Store
   buyer: Buyer
 }
@@ -137,8 +137,8 @@ type Order @entity {
 type Return @entity {
   id: ID!
 
+  listing: Listing
   store: Store
-  product: Product
   order: Order
   buyer: Buyer
 }
@@ -146,7 +146,7 @@ type Return @entity {
 type Rating @entity {
   id: ID!
 
-  product: Product
+  listing: Listing
   store: Store
   buyer: Buyer
   rating: Int
