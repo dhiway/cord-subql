@@ -34,6 +34,8 @@ export async function createListing ({ call, extrinsic, rawCall }: DispatchedCal
     let price = Number(args[4].value)
     let prodId = args[6].value
 
+    if (!prodId)
+       return;
     const product = await Product.get(prodId)
     if (!product) {
         logger.info(`${prodId}`)
