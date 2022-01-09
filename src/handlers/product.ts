@@ -6,8 +6,6 @@ import { KVData, Product, Order, Listing, Rating, Return, Buyer, Store } from ".
 
 export async function createProduct ({ call, extrinsic, rawCall }: DispatchedCallData) {
     const args = rawCall.args
-    logger.info("Args: ", call.args[0], rawCall.args[0], extrinsic.args[0], args)
-
     await ensureCallExist(call.id)
 
     const prodId = (args[0] as any).toString()
@@ -35,7 +33,6 @@ export async function createListing ({ call, extrinsic, rawCall }: DispatchedCal
     const listId = (args[0] as any).toString()
     const storeId = (args[3] as any).toString()
     const price = Number(args[4] as any)
-    let price = Number(args[4].value)
 
     if (!listId || !prodId || !storeId || !creator)
        return;
@@ -63,17 +60,18 @@ export async function createListing ({ call, extrinsic, rawCall }: DispatchedCal
 }
 
 export async function orderProduct ({ call, extrinsic, rawCall }: DispatchedCallData) {
-    const args = call.args
+    const args = rawCall.args
 
     await ensureCallExist(call.id)
 
 
     /* TODO: check what is 'txHash' in order tx */
     
-    let orderId = args[0].value
-    let txHash = args[2].value
-    const buyerId = args[1].value
-    const storeId = args[4].value
+    let orderId = (args[0] as any).toString()
+    let txHash = (args[2] as any).toString()
+    const buyerId = (args[1] as any).toString()
+    const storeId = (args[4] as any).toString()
+    
     if (!orderId || !txHash || !buyerId || !storeId)
        return;
     
@@ -102,12 +100,12 @@ export async function orderProduct ({ call, extrinsic, rawCall }: DispatchedCall
 }
 
 export async function returnProduct ({ call, extrinsic, rawCall }: DispatchedCallData) {
-    const args = call.args
+    const args = rawCall.args
 
     await ensureCallExist(call.id)
 
-    const buyerId = args[1].value
-    let orderId = args[0].value
+    const buyerId = (args[1] as any).toString()
+    let orderId = (args[0] as any).toString()
     if (!orderId || buyerId)
 	return
     const order = await Order.get(orderId)
@@ -130,13 +128,13 @@ export async function returnProduct ({ call, extrinsic, rawCall }: DispatchedCal
 }
 
 export async function giveRating ({ call, extrinsic, rawCall }: DispatchedCallData) {
-    const args = call.args
+    const args = rawCall.args
 
     await ensureCallExist(call.id)
 
-    let ratingId = args[0].value
-    let orderId = args[7].value
-    const buyerId = args[1].value
+    let ratingId = (args[0] as any).toString()
+    let orderId = (args[7] as any).toString()
+    const buyerId = (args[1] as any).toString()
 
     if (!orderId || !ratingId || !buyerId)
 	return
@@ -152,7 +150,7 @@ export async function giveRating ({ call, extrinsic, rawCall }: DispatchedCallDa
         logger.info("No buyer found");
 	//return;
     }
-    const givenRating  = parseInt(args[8].value, 10)
+    const givenRating = Number(args[0] as any)
 
     buyer.score += 1;
     buyer.save()
@@ -167,11 +165,11 @@ export async function giveRating ({ call, extrinsic, rawCall }: DispatchedCallDa
 }
 
 export async function updateStatus ({ call, extrinsic, rawCall }: DispatchedCallData) {
-    const args = call.args
+    const args = rawCall.args
 
     await ensureCallExist(call.id)
 
-    let listId = args[0].value
+    let listId = (args[0] as any).toString()
     if (!listId)
 	return;
     
@@ -179,7 +177,7 @@ export async function updateStatus ({ call, extrinsic, rawCall }: DispatchedCall
     if (!listing) {
 	return;
     }
-    let newStatus = args[2].value
+    let newStatus = (args[2] as any).toString()
     listing.status = newStatus;
     await listing.save()
 }
