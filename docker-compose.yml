@@ -16,9 +16,10 @@ services:
       - 9944:9944
       - 9933:9933
     volumes:
-      - .data/cord:/cord/.local/share
+      - .data/cord:/cord/
     command:
       - --dev
+      - --base-path=/cord
       - --unsafe-ws-external
       - --unsafe-rpc-external
 
