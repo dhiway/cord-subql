@@ -68,26 +68,28 @@ export async function orderProduct ({ call, extrinsic, rawCall }: DispatchedCall
     /* TODO: check what is 'txHash' in order tx */
     
     let orderId = (args[0] as any).toString()
-    let txHash = (args[2] as any).toString()
     const buyerId = (args[1] as any).toString()
+    let txHash = (args[2] as any).toString()
     const storeId = (args[3] as any).toString()
     const listingId = (args[7] as any).toString()
-    
     if (!orderId || !buyerId || !storeId || !listingId)
        return;
     
     const listing = await Listing.get(listingId)
-    if (!listing)
+    if (!listing) {
+	logger.info("Listing not found")
 	return;
+    }
 
+    let store = await Store.get(storeId)
+    if (!store) {
+	logger.info("Store not found")
+        return
+    }
     let buyer = await Buyer.get(buyerId)
     if (!buyer) {
 	buyer = new Buyer(buyerId)
-	buyer.save()
-    }
-    let store = await Store.get(buyerId)
-    if (!store) {
-        return
+	buyer.score = 0
     }
 
     buyer.score += 1; /* every return is -2, and every order is +1 */
@@ -143,15 +145,15 @@ export async function giveRating ({ call, extrinsic, rawCall }: DispatchedCallDa
     const order = await Order.get(orderId)
     if (!order) {
         logger.info("No order found");
-	//return;
+	return;
     }
 
     const buyer = await Buyer.get(buyerId)
     if (!buyer) {
         logger.info("No buyer found");
-	//return;
+	return;
     }
-    const givenRating = Number(args[0] as any)
+    const givenRating = Number(args[8] as any)
 
     buyer.score += 1;
     buyer.save()

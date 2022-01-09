@@ -30,3 +30,25 @@ query {
   }
 }
 ```
+
+```
+# Write your query or mutation here
+query {
+   listings { 
+    totalCount
+    nodes { id, price product { id } store { id} }
+  }
+  products {
+    totalCount 
+    nodes {id}
+  }
+  stores{totalCount nodes {id}}
+  orders{totalCount nodes {id}}
+  returns{totalCount nodes {id}}
+  ratings{totalCount nodes {id}}
+  calls(filter: { section: { equalTo: "product"}}) {
+    totalCount
+    nodes { id, method, section }
+  }
+}
+```
