@@ -25,7 +25,6 @@ export async function createListing ({ call, extrinsic, rawCall }: DispatchedCal
     const args = call.args
 
     await ensureCallExist(call.id)
-    logger.info(args)
 
     let listId = args[0].value
     let creator = args[1].value
@@ -125,23 +124,27 @@ export async function giveRating ({ call, extrinsic, rawCall }: DispatchedCallDa
 
     await ensureCallExist(call.id)
 
-    let orderId = args[0].value
+    let ratingId = args[0].value
+    let orderId = args[7].value
     const order = await Order.get(orderId)
     if (!order) {
-	return;
+        logger.info("No order found");
+	//return;
     }
 
     const buyerId = args[1].value
     const buyer = await Buyer.get(buyerId)
     if (!buyer) {
-	return;
+        logger.info("No buyer found");
+	//return;
     }
-    const givenRating  = parseInt(args[2].value, 10)
+    const givenRating  = parseInt(args[8].value, 10)
 
     buyer.score += 1;
     buyer.save()
 
-    const rating = new Rating(call.id);
+    
+    const rating = new Rating(ratingId);
     rating.buyerId = buyer.id;
     rating.rating = givenRating;
     rating.productId = order.productId
