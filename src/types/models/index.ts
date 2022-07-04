@@ -12,5 +12,9 @@ export {Event} from "./Event"
 
 export {Account} from "./Account"
 
-export {Transfer} from "./Transfer"
+export {Space} from "./Space"
+
+export {Schema} from "./Schema"
+
+export {Stream} from "./Stream"
 

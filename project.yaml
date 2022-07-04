@@ -5,7 +5,7 @@ repository: "https://github.com/subquery/subql-examples"
 schema: "./schema.graphql"
 
 network:
-  endpoint: "wss://staging.cord.network"
+  endpoint: "ws://staging.cord.network:9944"
   types: {
     "AccountInfo": "AccountInfoWithTripleRefCount",
     "Address": "MultiAddress",
@@ -82,7 +82,7 @@ network:
 dataSources:
   - name: runtime
     kind: substrate/Runtime
-    startBlock: 474990
+    startBlock: 1
     mapping:
       handlers:
         - handler: handleBlock
