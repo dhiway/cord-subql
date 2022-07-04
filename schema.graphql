@@ -75,20 +75,34 @@ type Account @entity {
 
   extrinsics: [Extrinsic] @derivedFrom(field: "signer")
   calls: [Call] @derivedFrom(field: "signer")
-  transferIn: [Transfer] @derivedFrom(field: "to")
-  transferOut: [Transfer] @derivedFrom(field: "from")
 }
 
-type Transfer @entity {
+type Space @entity {
   id: ID!
 
-  from: Account
-  to: Account
-  amount: String
-  amountInUSD: String
-
-  extrinsic: Extrinsic
-  call: Call
+  creator: String
+  hash: String
   timestamp: Date
-  isSuccess: Boolean
+  archived: Boolean
 }
+
+type Schema @entity {
+  id: ID!
+
+  creator: String
+  hash: String
+  revoked: Boolean
+}
+
+type Stream @entity {
+  id: ID!
+
+  identifier: String
+  creator: String
+  hash: String
+  link: Stream
+  schema: Schema
+  space: Space
+  revoked: Boolean
+}
+
