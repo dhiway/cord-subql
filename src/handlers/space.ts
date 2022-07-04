@@ -8,7 +8,7 @@ export const handleSpaceCreate: EventHandler = async ({ event, rawEvent }) => {
 
     await ensureAccount(creator.toString())
 
-    const space = new Space(identifier.toString());
+    const space = new Space(identifier);
 
     space.hash = space_hash.toString()
     space.timestamp = rawEvent.block.timestamp
