@@ -1,29 +1,26 @@
 ### CORD SubQL
 
-
 Get this started with below steps:
 
-```
+```sh
 yarn
 yarn codegen
 yarn build
-
 ```
-
 
 ## Development
 
 Make changes to mappings, handlers, etc and compile again, and run the project.
 
-
 Run the below command once build is complete
 
-`docker-compose -f ./docker-compose-development.yaml up`
-
+```sh
+docker-compose -f ./docker-compose-dev.yml up
+```
 
 Once its running, you can run the `yarn demo` from [cord-demo-scripts](dhiway/cord-demo-scripts) and run below query
 
-```
+```graphql
 query {
    spaces {
       totalCount
