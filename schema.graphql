@@ -1,0 +1,111 @@
+# To improve query performance, we strongly suggest adding indexes to any field that you plan to filter or sort by
+# Add the `@index` or `@index(unique: true)` annotation after any non-key field
+# https://academy.subquery.network/build/graphql.html#indexing-by-non-primary-key-field
+
+type KVData @jsonField {
+  key: String
+  value: String
+  type: String
+}
+
+type Block @entity {
+  id: ID!
+
+  number: BigInt
+  timestamp: Date
+  parentHash: String
+  specVersion: String
+  stateRoot: String
+  extrinsicRoot: String
+
+  extrinsics: [Extrinsic] @derivedFrom(field: "block")
+  events: [Event] @derivedFrom(field: "block")
+}
+
+type Extrinsic @entity {
+  id: ID!
+
+  method: String
+  section: String
+  args: [KVData]
+  signer: Account
+  nonce: BigInt
+  timestamp: Date
+  signature: String
+  tip: String
+  isSigned: Boolean
+  isSuccess: Boolean
+
+  block: Block
+  events: [Event] @derivedFrom(field: "extrinsic")
+  calls: [Call] @derivedFrom(field: "extrinsic")
+}
+
+type Call @entity {
+  id: ID!
+
+  section: String
+  method: String
+  args:[KVData] 
+  timestamp: Date
+  isSuccess: Boolean
+
+  signer: Account
+  extrinsic: Extrinsic
+  parentCall: Call
+
+  calls: [Call] @derivedFrom(field: "parentCall")
+}
+
+type Event @entity {
+  id: ID!
+
+  index: Int
+  section: String
+  method: String
+  data: [KVData]
+
+  timestamp: Date
+  blockNumber: BigInt
+  block: Block
+  extrinsic: Extrinsic
+}
+
+type Account @entity {
+  id: ID!
+
+  txCount: BigInt
+  createAtBlock: Block
+
+  extrinsics: [Extrinsic] @derivedFrom(field: "signer")
+  calls: [Call] @derivedFrom(field: "signer")
+}
+
+type Schema @entity {
+  id: ID!
+
+  creator: String
+  identifier: String
+  revoked: Boolean
+}
+
+type Registry @entity {
+  id: ID!
+
+  creator: String
+  identifier: String
+  schema: Schema
+  timestamp: Date
+  archived: Boolean
+}
+
+
+type Stream @entity {
+  id: ID!
+
+  identifier: String
+  creator: String
+  hash: String
+  registry: Registry
+  revoked: Boolean
+}
