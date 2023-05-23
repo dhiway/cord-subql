@@ -1,7 +1,4 @@
-# SubQuery - Starter Package
-
-The Starter Package is an example that you can use as a starting point for developing your SubQuery project.
-A SubQuery package defines which data The SubQuery will index from the Substrate blockchain, and how it will store it.
+# SubQuery - CORD 
 
 ## Preparation
 
@@ -10,36 +7,6 @@ A SubQuery package defines which data The SubQuery will index from the Substrate
 - [Typescript](https://www.typescriptlang.org/) are required to compile project and define types.
 
 - Both SubQuery CLI and generated Project have dependencies and require [Node](https://nodejs.org/en/).
-
-#### Install the SubQuery CLI
-
-Install SubQuery CLI globally on your terminal by using NPM:
-
-```
-npm install -g @subql/cli
-```
-
-Run help to see available commands and usage provide by CLI
-
-```
-subql help
-```
-
-## Initialize the starter package
-
-Inside the directory in which you want to create the SubQuery project, simply replace `project-name` with your project name and run the command:
-
-```
-subql init --starter project-name
-```
-
-Then you should see a folder with your project name has been created inside the directory, you can use this as the start point of your project. And the files should be identical as in the [Directory Structure](https://doc.subquery.network/directory_structure.html).
-
-Last, under the project directory, run following command to install all the dependency.
-
-```
-yarn install
-```
 
 ## Configure your project
 
@@ -86,7 +53,9 @@ Open your browser and head to `http://localhost:3000`.
 
 Finally, you should see a GraphQL playground is showing in the explorer and the schemas that ready to query.
 
-For the `subql-starter` project, you can try to query with the following code to get a taste of how it works.
+For the `cord-subql` project, you can try to query with the following code to get a taste of how it works.
+
+### TODO: fix the query with the right commands once ready
 
 ```graphql
 {
