@@ -17,13 +17,13 @@ schema:
 network:
   # The genesis hash of the network (hash of block 0)
   #chainId: "0x7a8e012fdc7ddde67eb47dc99864334b776a90e2f5a6110af44b8590bc0969c4a"
-  chainId: "0x7a8e012fdc7ddde67eb47dc99864334b776a90e2f5a6110af44b8590bc0969c4"
+  chainId: "0x13fb11758d8fe80d657f32bfe3bb5f323e0d67bd5122227e573c949a351637f7"
   # This endpoint must be a public non-pruned archive node
   # Public nodes may be rate limited, which can affect indexing speed
   # When developing your project we suggest getting a private API key
   # You can get them from OnFinality for free https://app.onfinality.io
   # https://documentation.onfinality.io/support/the-enhanced-api-service
-  endpoint: wss://staging.cord.network
+  endpoint: ws://cord:9944
   # Optionally provide the HTTP endpoint of a full chain dictionary to speed up processing
   # dictionary: "https://api.subquery.network/sq/subquery/polkadot-dictionary"
 dataSources:
