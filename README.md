@@ -55,18 +55,30 @@ Finally, you should see a GraphQL playground is showing in the explorer and the 
 
 For the `cord-subql` project, you can try to query with the following code to get a taste of how it works.
 
-### TODO: fix the query with the right commands once ready
+run the 'yarn demo' from cord.js repo, and see that below query would provide the results.
 
 ```graphql
 {
-  query {
-    starterEntities(first: 10) {
-      nodes {
-        field1
-        field2
-        field3
-        field4
-      }
+ blocks {
+    totalCount
+  },
+  extrinsics {
+    totalCount
+    nodes {
+      id
+      section
+      method
+    }
+  },
+  events {
+    totalCount
+    nodes{
+      id
+      section
+      method
+      blockNumber
+      timestamp
+      index
     }
   }
 }

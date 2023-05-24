@@ -66,13 +66,10 @@ services:
       - --playground
       - --indexer=http://subquery-node:3000
 
-
   cord:
     image: dhiway/cord:develop
     ports:
       - 9944:9944
-    volumes:
-      - ./cord:/data
     command:
       - --dev
       - --unsafe-ws-external
