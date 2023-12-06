@@ -2,50 +2,72 @@
 # Add the `@index` or `@index(unique: true)` annotation after any non-key field
 # https://academy.subquery.network/build/graphql.html#indexing-by-non-primary-key-field
 
-type Transfer @entity {
-  """
-  id field is always required and must look like this
-  """
-  id: ID!
-  """
-  Amount that is transferred
-  """
-  amount: BigInt!
-  """
-  The block height of the transfer
-  """
-  blockNumber: Int!
-  """
-  The date of the transfer
-  """
-  date: Date!
-  """
-  The account that transfers are made from
-  """
-  from: Account!
-  """
-  The account that transfers are made to
-  """
-  to: Account!
+
+type KVData @jsonField {
+  key: String
+  value: String
+  type: String
 }
 
-type Account @entity {
-  """
-  id field is always required and must look like this
-  """
+type Block @entity {
   id: ID!
-  """
-  The public key of this account (same across all Polkadot parachains)
-  """
-  publicKey: String!
-  """
-  The first block on which we see a transfer involving this account
-  """
-  firstTransferBlock: Int
-  """
-  The most recent block on which we see a transfer involving this account
-  """
-  lastTransferBlock: Int
-  sentTransfers: [Transfer] @derivedFrom(field: "from") # These are virtual properties to help us navigate to the correct foreign key of Transfer
-  recievedTransfers: [Transfer] @derivedFrom(field: "to") # These are virtual properties to help us navigate to the correct foreign key of Transfer
+
+  number: BigInt
+  timestamp: Date
+  parentHash: String
+  specVersion: String
+  stateRoot: String
+  extrinsicRoot: String
+
+  extrinsics: [Extrinsic] @derivedFrom(field: "block")
+  events: [Event] @derivedFrom(field: "block")
+}
+
+type Extrinsic @entity {
+  id: ID!
+
+  method: String
+  section: String
+  args: [KVData]
+  signer: Account
+  nonce: BigInt
+  timestamp: Date
+  signature: String
+  tip: String
+  isSigned: Boolean
+  isSuccess: Boolean
+
+  block: Block
+  events: [Event] @derivedFrom(field: "extrinsic")
+  calls: [Call] @derivedFrom(field: "extrinsic")
+}
+
+type Call @entity {
+  id: ID!
+
+  section: String
+  method: String
+  args:[KVData] 
+  timestamp: Date
+  isSuccess: Boolean
+
+  signer: Account
+  extrinsic: Extrinsic
+  parentCall: Call
+
+  calls: [Call] @derivedFrom(field: "parentCall")
+}
+
+type Event @entity {
+  id: ID!
+
+  index: Int
+  section: String
+  method: String
+  data: [KVData]
+
+  timestamp: Date
+  blockNumber: BigInt
+  block: Block
+  extrinsic: Extrinsic
 }
