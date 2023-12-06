@@ -1,0 +1,35 @@
+{
+  "name": "CORD",
+  "version": "0.0.5",
+  "description": "CORD",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "subql build",
+    "codegen": "subql codegen",
+    "start:docker": "docker-compose pull && docker-compose up --remove-orphans",
+    "dev": "subql codegen && subql build && docker-compose pull && docker-compose up --remove-orphans",
+    "prepack": "rm -rf dist && npm run build",
+    "test": "subql build && subql-node test"
+  },
+  "homepage": "https://github.com/subquery/karura-subql-starter",
+  "repository": "github:subquery/karura-subql-starter",
+  "files": [
+    "dist",
+    "schema.graphql",
+    "project.yaml"
+  ],
+  "author": "Dhiway Engineering",
+  "license": "MIT",
+  "devDependencies": {
+    "@polkadot/api": "^10",
+    "@subql/types": "latest",
+    "typescript": "^5.2.2",
+    "@subql/cli": "latest",
+    "@acala-network/type-definitions": "latest",
+    "@subql/testing": "latest",
+    "@subql/node": "latest"
+  },
+  "exports": {
+    "chaintypes": "src/chaintypes.ts"
+  }
+}
