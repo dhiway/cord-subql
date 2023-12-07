@@ -22,14 +22,16 @@
   "license": "MIT",
   "devDependencies": {
     "@polkadot/api": "^10",
-    "@subql/types": "latest",
-    "typescript": "^5.2.2",
     "@subql/cli": "latest",
-    "@acala-network/type-definitions": "latest",
+    "@subql/node": "latest",
     "@subql/testing": "latest",
-    "@subql/node": "latest"
+    "@subql/types": "latest",
+    "typescript": "^5.2.2"
   },
   "exports": {
     "chaintypes": "src/chaintypes.ts"
+  },
+  "dependencies": {
+    "@cord.network/sdk": "^0.9.1"
   }
 }

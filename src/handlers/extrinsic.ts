@@ -23,16 +23,17 @@ export async function createExtrinsic (extrinsic: SubstrateExtrinsic) {
 
   const recordId = extrinsic.extrinsic.hash.toString()
 
+  const method = extrinsic.extrinsic.method.method 
+  const section = extrinsic.extrinsic.method.section
+  if (method === 'set' && section === 'timestamp')
+     return null;
+
   let data = await Extrinsic.get(recordId)
   if (!data) {
       data = new Extrinsic(recordId)
   }
-
-  data.method = extrinsic.extrinsic.method.method 
-  data.section = extrinsic.extrinsic.method.section
-  if (data.method === 'set' && data.section === 'timestamp')
-     return null;
-
+  data.method = method;
+  data.section = section;
   const block = await ensureBlock(extrinsic.block)
   const signer = await ensureAccount(signerAccount)
 

@@ -6,15 +6,6 @@ import { SubstrateExtrinsic } from "@subql/types";
 import { Dispatcher, getBatchInterruptedIndex, getKVData } from './utils';
 import { createScore } from './score';
 
-const dispatcher = new Dispatcher<DispatchedCallData>()
-
-
-dispatcher.batchRegist([
-    { key: 'networkScore-registerRating', handler: createScore },
-//  { key: 'currencies-transfer', handler: createTransferInCurrencies },
-//  { key: 'balances-transferKeepAlive', handler: createTranserInBalances },
-])
-
 async function traverExtrinsic(extrinsic: Extrinsic, raw: SubstrateExtrinsic): Promise<Call[]> {
   const list: any[] = []
   const batchInterruptedIndex = getBatchInterruptedIndex(raw)
@@ -31,6 +22,12 @@ async function traverExtrinsic(extrinsic: Extrinsic, raw: SubstrateExtrinsic): P
     const section = data.section
     const args = data.args
 
+    if (method === 'submitDidCall' && section === 'did') {
+	/* there will be one call below */
+	 const temp = (args[0] as any).call as unknown as AnyCall;
+	 logger.info(`DidSubmitCall:  ${temp}`);
+	 await inner(temp, id, 1, false, depth + 1);
+    }
     const call = new Call(id)
 
     call.method = method
@@ -50,11 +47,17 @@ async function traverExtrinsic(extrinsic: Extrinsic, raw: SubstrateExtrinsic): P
 
     list.push(call)
 
+    /*
     await dispatcher.dispatch(
       `${call.section}-${call.method}`,
       { call, extrinsic, rawCall: data, rawExtrinsic: raw }
     )
-    console.log("Call ", `${call.section}-${call.method}`, call, data);
+    */
+    if (call.section === 'networkScore') {
+       logger.info("Scoring call");
+       await createScore(raw, id as string);
+    }
+       
     if (depth < 1 && section === 'utility' && (method === 'batch' || method === 'batchAll')) {
       const temp = args[0] as unknown as Vec<AnyCall>
 
@@ -70,7 +73,7 @@ async function traverExtrinsic(extrinsic: Extrinsic, raw: SubstrateExtrinsic): P
 export async function createCalls (extrinsic: Extrinsic, raw: SubstrateExtrinsic) {
 
     const calls = await traverExtrinsic(extrinsic, raw)
-
+    logger.info(`Calls: ${calls}`)
     await Promise.all(calls.map(async (item) => item.save()));
 }
 

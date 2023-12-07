@@ -71,3 +71,24 @@ type Event @entity {
   block: Block
   extrinsic: Extrinsic
 }
+
+type Account @entity {
+  id: ID!
+
+  txCount: BigInt
+  createAtBlock: Block
+
+  extrinsics: [Extrinsic] @derivedFrom(field: "signer")
+  calls: [Call] @derivedFrom(field: "signer")
+}
+
+type Rating @entity {
+  id: ID!
+
+  entityId: String
+  providerId: String
+  totalCount: Int
+  totalRating: Int
+  entityType: String
+  ratingType: String
+}

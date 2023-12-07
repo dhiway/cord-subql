@@ -38,9 +38,9 @@ const project: SubstrateProject = {
     endpoint: ["ws://host.docker.internal:9944"],
     // Optionally provide the HTTP endpoint of a full chain dictionary to speed up processing
     //dictionary: "https://api.subquery.network/sq/subquery/karura-dictionary",
-    chaintypes: {
-      file: "./dist/chaintypes.js",
-    },
+   // chaintypes: {
+   //   file: "./dist/chaintypes.js",
+   // },
   },
   dataSources: [
     {
@@ -52,17 +52,11 @@ const project: SubstrateProject = {
           /*{
             kind: SubstrateHandlerKind.Block,
             handler: "handleBlock",
-            filter: {
-              modulo: 100,
-            },
           },*/
-          /*{
+          {
             kind: SubstrateHandlerKind.Call,
             handler: "handleCall",
-            filter: {
-              module: "balances",
-            },
-          },*/
+          },
           {
             kind: SubstrateHandlerKind.Event,
             handler: "handleEvent",

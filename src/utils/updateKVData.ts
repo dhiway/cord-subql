@@ -1,4 +1,4 @@
-import { KVData } from "../../types";
+import { KVData } from "../types";
 
 export const updateKVData = (kv1: KVData, kv2: Partial<KVData>) => {
 	return { ...kv1, ...kv2 };
