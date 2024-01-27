@@ -92,3 +92,13 @@ type Rating @entity {
   entityType: String
   ratingType: String
 }
+
+type Statement @entity {
+  id: ID!
+
+  method: String
+  statement_id: String
+  authorization: String
+  schema_id: String
+  digest: String
+}

@@ -5,6 +5,7 @@ import { AnyCall, DispatchedCallData } from './types'
 import { SubstrateExtrinsic } from "@subql/types";
 import { Dispatcher, getBatchInterruptedIndex, getKVData } from './utils';
 import { createScore } from './score';
+import { createStatement } from './statement';
 
 async function traverExtrinsic(extrinsic: Extrinsic, raw: SubstrateExtrinsic): Promise<Call[]> {
   const list: any[] = []
@@ -56,6 +57,11 @@ async function traverExtrinsic(extrinsic: Extrinsic, raw: SubstrateExtrinsic): P
     if (call.section === 'networkScore') {
        logger.info("Scoring call");
        await createScore(raw, id as string);
+    }
+    if(call.section === 'statement'){
+      logger.info("\n\n\n\nStatement call inside call.ts and calling createStatement");
+      logger.info(`${data.method}`)
+      await createStatement(raw,call, id as string,data.method);
     }
        
     if (depth < 1 && section === 'utility' && (method === 'batch' || method === 'batchAll')) {

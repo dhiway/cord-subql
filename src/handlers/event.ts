@@ -57,7 +57,7 @@ export async function createEvent(event: SubstrateEvent) {
   data.section = section;
   data.method = method;
   data.data = eventData;
-
+  logger.info(`\nsection: ${section}\nmethod: ${method}\neventData: ${eventData}`)
   const extrinsic = await (event.extrinsic
     ? ensureExtrinsic(event.extrinsic)
     : undefined);
