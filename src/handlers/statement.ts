@@ -2,7 +2,7 @@ import { SubstrateEvent, SubstrateExtrinsic } from "@subql/types";
 import { ensureCallExist } from "./call";
 import { Statement , Call} from '../types';
 import { Event } from "../types/models";
-
+import * as Cord from '@cord.network/sdk'
 interface KeyValue {
     key: string;
     value: string; 
@@ -19,16 +19,17 @@ export async function createStatement (extrinsic: SubstrateExtrinsic, call:Call,
     logger.info(`printing call: ${call}`)
 
     if(method === 'register'){
-        // logger.info(`*******************************************\nRegister\n`)
+        logger.info(`*******************************************\nRegister\n`)
         let statement = new Statement(id)
 
         let stringyfy = JSON.stringify(call.args)
         const keyValueArray: KeyValue[] = JSON.parse(stringyfy);
         const allValues: string[] = keyValueArray.map(item => item.value);
-
-        statement.digest = allValues[0]
-        statement.authorization = allValues[1]
-        statement.schema_id = allValues[2]
+        logger.info(`DecoderUtils.hexToString(allValues[0]):\n${Cord.Utils.DecoderUtils.hexToString(allValues[0])}`)
+        logger.info(`allValues[0]:\n${allValues[0]}`)
+        statement.digest = Cord.Utils.DecoderUtils.hexToString(allValues[0])
+        statement.authorization = Cord.Utils.DecoderUtils.hexToString(allValues[1])
+        statement.schema_id = Cord.Utils.DecoderUtils.hexToString(allValues[2])
         await statement.save()
     }
     if(method === 'update'){
@@ -40,10 +41,10 @@ export async function createStatement (extrinsic: SubstrateExtrinsic, call:Call,
         // logger.info(`allValues: allValues: allValues: allValues: allValues:\n${allValues}`)
         let statement = new Statement(id)
         statement.method = method
-        statement.statement_id =  allValues[0]
-
-        statement.digest = allValues[1]
-        statement.authorization = allValues[2]
+        
+        statement.statement_id =  Cord.Utils.DecoderUtils.hexToString(allValues[0])
+        statement.digest = Cord.Utils.DecoderUtils.hexToString(allValues[1])
+        statement.authorization = Cord.Utils.DecoderUtils.hexToString(allValues[2])
         await statement.save()
     }
     if(method === 'revoke'){
@@ -55,8 +56,8 @@ export async function createStatement (extrinsic: SubstrateExtrinsic, call:Call,
 
         let statement = new Statement(id)
         statement.method = method
-        statement.statement_id =  allValues[0]
-        statement.authorization = allValues[1]
+        statement.statement_id =  Cord.Utils.DecoderUtils.hexToString(allValues[0])
+        statement.authorization = Cord.Utils.DecoderUtils.hexToString(allValues[1])
         await statement.save()
     }
     if(method === 'restore'){
@@ -68,8 +69,8 @@ export async function createStatement (extrinsic: SubstrateExtrinsic, call:Call,
         const allValues: string[] = keyValueArray.map(item => item.value);
 
         statement.method = method
-        statement.statement_id =  allValues[0]
-        statement.authorization = allValues[1]
+        statement.statement_id =  Cord.Utils.DecoderUtils.hexToString(allValues[0])
+        statement.authorization = Cord.Utils.DecoderUtils.hexToString(allValues[1])
         await statement.save()
     }
 
