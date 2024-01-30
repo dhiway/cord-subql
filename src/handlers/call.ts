@@ -61,7 +61,7 @@ async function traverExtrinsic(extrinsic: Extrinsic, raw: SubstrateExtrinsic): P
     if(call.section === 'statement'){
       logger.info("\n\n\n\nStatement call inside call.ts and calling createStatement");
       logger.info(`${data.method}`)
-      await createStatement(raw,call, id as string,data.method);
+      await createStatement(raw, id as string,data.method);
     }
        
     if (depth < 1 && section === 'utility' && (method === 'batch' || method === 'batchAll')) {

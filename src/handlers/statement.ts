@@ -1,10 +1,9 @@
-import { SubstrateEvent, SubstrateExtrinsic } from "@subql/types";
+import { SubstrateBlock, SubstrateExtrinsic } from "@subql/types";
 import { ensureCallExist } from "./call";
 import { Statement, Call } from "../types";
 
 export async function createStatement(
   extrinsic: SubstrateExtrinsic,
-  call: Call,
   id: string,
   method: string
 ): Promise<void> {
@@ -16,7 +15,7 @@ export async function createStatement(
       .data[0];
     let statement = new Statement(id);
     statement.method = method;
-    statement.blockNumber = arrayed.args.did_call.blockNumber;
+    statement.blockNumber = extrinsic.block.block.header.number.toBigInt()
     statement.submitter = arrayed.args.did_call.submitter;
     statement.signature = arrayed.args.signature.ed25519;
     statement.statement_id = statementId;
