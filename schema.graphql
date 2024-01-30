@@ -105,20 +105,25 @@ type Schema @entity {
 type Registry @entity {
   id: ID!
 
-  creator: String
-  identifier: String
-  schema: Schema
-  timestamp: Date
-  archived: Boolean
+  method: String
+  blockNumber: BigInt
+  submitter: String
+  signature: String
+  statement_id: String
+  authorization: String
+  schema_id: String
+  digest: String
 }
 
-
-type Stream @entity {
+type ChainSpace @entity {
   id: ID!
 
-  identifier: String
-  creator: String
-  hash: String
-  registry: Registry
-  revoked: Boolean
+  method: String
+  blockNumber: BigInt
+  submitter: String
+  signature: String
+  chainspace_id: String
+  authorization: String
+  space_id: String
+  delegate: String
 }
