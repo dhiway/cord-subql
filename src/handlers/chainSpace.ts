@@ -15,26 +15,62 @@ export async function createChainSpace(
   let chainspace = new ChainSpace(id);
 
   chainspace.method = method;
-  chainspace.callIndex = arrayed.args.did_call.call.callIndex
-  if (extrinsic.block.block.header.number.toBigInt()) {
-    chainspace.blockNumber = extrinsic.block.block.header.number.toBigInt();
-  }
-  if (arrayed.args.signature) {
-    chainspace.signature = JSON.stringify(arrayed.args.signature);
-  }
-  if (chainSpaceId) {
-    chainspace.chainspace_id = chainSpaceId;
-  }
-  if (arrayed.args.did_call.call.args.authorization) {
-    chainspace.authorization = arrayed.args.did_call.call.args.authorization;
-  }
-  if (arrayed.args.did_call.call.args.space_id || chainSpaceId) {
-    chainspace.space_id =
-      arrayed.args.did_call.call.args.space_id || chainSpaceId;
-  }
-  if (arrayed.args.did_call.call.args.delegate) {
-    chainspace.delegate = arrayed.args.did_call.call.args.delegate;
+  chainspace.callIndex = arrayed.args.did_call.call.callIndex;
+  chainspace.chainspace_id = chainSpaceId;
+  chainspace.blockNumber = extrinsic.block.block.header.number.toBigInt();
+  chainspace.signature = JSON.stringify(arrayed.args.signature);
+
+  if (method === "create") {
+    chainspace.space_code = arrayed.args.did_call.call.args.space_code;
   }
 
+  if (method === "addDelegate") {
+    chainspace.space_id = arrayed.args.did_call.call.args.space_id;
+    chainspace.delegate = arrayed.args.did_call.call.args.delegate;
+    chainspace.authorization = arrayed.args.did_call.call.args.authorization;
+    chainspace.submitter = arrayed.args.did_call.submitter;
+  }
+
+  if (method === "approve") {
+    // ToDo:
+    // Develop a demo script within the GitHub repository at github.com/dhiway/cord.js which
+    // calls this method. Execute the script to capture the extrinsic information, analyze the obtained data,
+    // and complete the implementation.
+  }
+
+  if (method === "archive") {
+    // ToDo:
+    // Develop a demo script within the GitHub repository at github.com/dhiway/cord.js which
+    // calls this method. Execute the script to capture the extrinsic information, analyze the obtained data,
+    // and complete the implementation.
+  }
+
+  if (method === "restore") {
+    // ToDo:
+    // Develop a demo script within the GitHub repository at github.com/dhiway/cord.js which
+    // calls this method. Execute the script to capture the extrinsic information, analyze the obtained data,
+    // and complete the implementation.
+  }
+
+  if (method === "addAdminDelegate") {
+    // ToDo:
+    // Develop a demo script within the GitHub repository at github.com/dhiway/cord.js which
+    // calls this method. Execute the script to capture the extrinsic information, analyze the obtained data,
+    // and complete the implementation.
+  }
+
+  if (method === "addAuditDelegate") {
+    // ToDo:
+    // Develop a demo script within the GitHub repository at github.com/dhiway/cord.js which
+    // calls this method. Execute the script to capture the extrinsic information, analyze the obtained data,
+    // and complete the implementation.
+  }
+
+  if (method === "removeDelegate") {
+    // ToDo:
+    // Develop a demo script within the GitHub repository at github.com/dhiway/cord.js which
+    // calls this method. Execute the script to capture the extrinsic information, analyze the obtained data,
+    // and complete the implementation.
+  }
   await chainspace.save();
 }

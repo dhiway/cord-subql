@@ -124,6 +124,7 @@ type ChainSpace @entity {
   signature: String
   chainspace_id: String
   authorization: String
+  space_code: String
   space_id: String
   delegate: String
 }
