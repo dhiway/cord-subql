@@ -3,7 +3,6 @@
 # https://academy.subquery.network/build/graphql.html#indexing-by-non-primary-key-field
 
 type StarterEntity @entity {
-
   id: ID! # Transaction hash
   hash: String
 
@@ -59,7 +58,7 @@ type Call @entity {
 
   section: String
   method: String
-  args:[KVData] 
+  args: [KVData]
   timestamp: Date
   isSuccess: Boolean
 
@@ -118,6 +117,7 @@ type Registry @entity {
 type ChainSpace @entity {
   id: ID!
 
+  callIndex: String
   method: String
   blockNumber: BigInt
   submitter: String

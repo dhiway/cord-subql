@@ -15,11 +15,12 @@ export async function createChainSpace(
   let chainspace = new ChainSpace(id);
 
   chainspace.method = method;
-  if (arrayed.args.did_call.blockNumber) {
-    chainspace.blockNumber = arrayed.args.did_call.blockNumber;
+  chainspace.callIndex = arrayed.args.did_call.call.callIndex
+  if (extrinsic.block.block.header.number.toBigInt()) {
+    chainspace.blockNumber = extrinsic.block.block.header.number.toBigInt();
   }
-  if (arrayed.args.signature.ed25519) {
-    chainspace.signature = arrayed.args.signature.ed25519;
+  if (arrayed.args.signature) {
+    chainspace.signature = JSON.stringify(arrayed.args.signature);
   }
   if (chainSpaceId) {
     chainspace.chainspace_id = chainSpaceId;
