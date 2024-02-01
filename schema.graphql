@@ -92,3 +92,44 @@ type Rating @entity {
   entityType: String
   ratingType: String
 }
+
+type Did @entity {
+  id: ID!
+
+  method: String
+  blockNumber: BigInt
+  identifier: String
+  submitter: String
+  signature: String
+
+  keyAgreementKeys: String
+  assertionKey: String
+  delegationKey: String
+  serviceDetails: [String]
+}
+
+type DidSubmitCall @entity {
+  id: ID!
+  blockNumber: BigInt
+
+  didUri: String
+  callIndex: String
+  txCounter: Int
+  submitter: String
+  signature: String
+}
+
+type Statement @entity {
+  id: ID!
+
+  method: String
+  callIndex: String
+  blockNumber: BigInt
+  submitter: String
+  signature: String
+
+  statement_id: String
+  authorization: String
+  schema_id: String
+  digest: String
+}
