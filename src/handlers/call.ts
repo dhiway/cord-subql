@@ -55,7 +55,7 @@ async function traverExtrinsic(extrinsic: Extrinsic, raw: SubstrateExtrinsic): P
     */
     if (call.section === 'networkScore') {
        logger.info("Scoring call");
-       await createScore(raw, id as string);
+       await createScore(raw, id as string, data.method);
     }
        
     if (depth < 1 && section === 'utility' && (method === 'batch' || method === 'batchAll')) {
