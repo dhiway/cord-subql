@@ -1,6 +1,5 @@
-import { SubstrateBlock, SubstrateExtrinsic } from "@subql/types";
-import { ensureCallExist } from "./call";
-import { Statement, Call } from "../types";
+import { SubstrateExtrinsic } from "@subql/types";
+import { Statement } from "../types";
 
 export async function createStatement(
   extrinsic: SubstrateExtrinsic,
@@ -17,7 +16,7 @@ export async function createStatement(
     statement.method = method;
     statement.blockNumber = extrinsic.block.block.header.number.toBigInt()
     statement.submitter = arrayed.args.did_call.submitter;
-    statement.signature = arrayed.args.signature.ed25519;
+    statement.signature = JSON.stringify(arrayed.args.signature);
     statement.statement_id = statementId;
     statement.authorization = arrayed.args.did_call.call.args.authorization;
     statement.schema_id = arrayed.args.did_call.call.args.schema_id;
@@ -28,9 +27,9 @@ export async function createStatement(
     let arrayed = JSON.parse(JSON.stringify(data));
     let statement = new Statement(id);
     statement.method = method;
-    statement.blockNumber = arrayed.args.did_call.blockNumber;
+    statement.blockNumber = extrinsic.block.block.header.number.toBigInt();
     statement.submitter = arrayed.args.did_call.submitter;
-    statement.signature = arrayed.args.signature.ed25519;
+    statement.signature = JSON.stringify(arrayed.args.signature);
     statement.statement_id = arrayed.args.did_call.call.args.statement_id;
     statement.digest = arrayed.args.did_call.call.args.digest;
     statement.authorization = arrayed.args.did_call.call.args.authorization;
@@ -40,9 +39,9 @@ export async function createStatement(
     let arrayed = JSON.parse(JSON.stringify(data));
     let statement = new Statement(id);
     statement.method = method;
-    statement.blockNumber = arrayed.args.did_call.blockNumber;
+    statement.blockNumber = extrinsic.block.block.header.number.toBigInt();
     statement.submitter = arrayed.args.did_call.submitter;
-    statement.signature = arrayed.args.signature.ed25519;
+    statement.signature = JSON.stringify(arrayed.args.signature);
     statement.statement_id = arrayed.args.did_call.call.args.statement_id;
     statement.authorization = arrayed.args.did_call.call.args.authorization;
     await statement.save();
@@ -50,9 +49,9 @@ export async function createStatement(
   if (method === "restore") {
     let arrayed = JSON.parse(JSON.stringify(data));
     let statement = new Statement(id);
-    statement.blockNumber = arrayed.args.did_call.blockNumber;
+    statement.blockNumber = extrinsic.block.block.header.number.toBigInt();
     statement.submitter = arrayed.args.did_call.submitter;
-    statement.signature = arrayed.args.signature.ed25519;
+    statement.signature = JSON.stringify(arrayed.args.signature);
     statement.method = method;
     statement.statement_id = arrayed.args.did_call.call.args.statement_id;
     statement.authorization = arrayed.args.did_call.call.args.authorization;
