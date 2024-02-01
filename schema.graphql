@@ -2,7 +2,6 @@
 # Add the `@index` or `@index(unique: true)` annotation after any non-key field
 # https://academy.subquery.network/build/graphql.html#indexing-by-non-primary-key-field
 
-
 type KVData @jsonField {
   key: String
   value: String
@@ -47,7 +46,7 @@ type Call @entity {
 
   section: String
   method: String
-  args:[KVData] 
+  args: [KVData]
   timestamp: Date
   isSuccess: Boolean
 
@@ -91,4 +90,16 @@ type Rating @entity {
   totalRating: Int
   entityType: String
   ratingType: String
+}
+
+type Schema @entity {
+  id: ID!
+
+  callIndex: String
+  method: String
+  blockNumber: BigInt
+  submitter: String
+  signature: String
+  authorization: String
+  schema_id: String
 }
