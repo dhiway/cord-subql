@@ -96,6 +96,7 @@ type Statement @entity {
   id: ID!
 
   method: String
+  callIndex: String
   blockNumber: BigInt
   submitter: String
   signature: String

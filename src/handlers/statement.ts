@@ -14,6 +14,7 @@ export async function createStatement(
       .data[0];
     let statement = new Statement(id);
     statement.method = method;
+    statement.callIndex = arrayed.args.did_call.call.callIndex
     statement.blockNumber = extrinsic.block.block.header.number.toBigInt();
     statement.submitter = arrayed.args.did_call.submitter;
     statement.signature = JSON.stringify(arrayed.args.signature);
@@ -27,6 +28,7 @@ export async function createStatement(
     let arrayed = JSON.parse(JSON.stringify(data));
     let statement = new Statement(id);
     statement.method = method;
+    statement.callIndex = arrayed.args.did_call.call.callIndex
     statement.blockNumber = extrinsic.block.block.header.number.toBigInt();
     statement.submitter = arrayed.args.did_call.submitter;
     statement.signature = JSON.stringify(arrayed.args.signature);
@@ -39,6 +41,7 @@ export async function createStatement(
     let arrayed = JSON.parse(JSON.stringify(data));
     let statement = new Statement(id);
     statement.method = method;
+    statement.callIndex = arrayed.args.did_call.call.callIndex
     statement.blockNumber = extrinsic.block.block.header.number.toBigInt();
     statement.submitter = arrayed.args.did_call.submitter;
     statement.signature = JSON.stringify(arrayed.args.signature);
@@ -49,10 +52,11 @@ export async function createStatement(
   if (method === "restore") {
     let arrayed = JSON.parse(JSON.stringify(data));
     let statement = new Statement(id);
+    statement.method = method;
+    statement.callIndex = arrayed.args.did_call.call.callIndex
     statement.blockNumber = extrinsic.block.block.header.number.toBigInt();
     statement.submitter = arrayed.args.did_call.submitter;
     statement.signature = JSON.stringify(arrayed.args.signature);
-    statement.method = method;
     statement.statement_id = arrayed.args.did_call.call.args.statement_id;
     statement.authorization = arrayed.args.did_call.call.args.authorization;
     await statement.save();
