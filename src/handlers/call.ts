@@ -5,7 +5,7 @@ import { AnyCall, DispatchedCallData } from "./types";
 import { SubstrateExtrinsic } from "@subql/types";
 import { Dispatcher, getBatchInterruptedIndex, getKVData } from "./utils";
 import { createScore } from "./score";
-import { createStatement } from "./statement";
+import { handleDidNameCall } from "./didName";
 
 async function traverExtrinsic(
   extrinsic: Extrinsic,
@@ -62,9 +62,9 @@ async function traverExtrinsic(
       logger.info("Scoring call");
       await createScore(raw, id as string);
     }
-    if (call.section === "statement") {
+    if (call.section === "didName") {
       logger.info(`${data.method}`);
-      await createStatement(raw, id as string, data.method);
+      await handleDidNameCall(raw, id as string, data.method);
     }
 
     if (

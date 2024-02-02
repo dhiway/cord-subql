@@ -92,7 +92,7 @@ type Rating @entity {
   ratingType: String
 }
 
-type Statement @entity {
+type DidName @entity {
   id: ID!
 
   method: String
@@ -101,8 +101,6 @@ type Statement @entity {
   submitter: String
   signature: String
 
-  statement_id: String
-  authorization: String
-  schema_id: String
-  digest: String
+  did: String
+  name: String
 }
