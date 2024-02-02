@@ -92,17 +92,40 @@ type Rating @entity {
   ratingType: String
 }
 
-type Statement @entity {
+type SetIdentity @entity {
   id: ID!
 
   method: String
   callIndex: String
   blockNumber: BigInt
-  submitter: String
-  signature: String
 
-  statement_id: String
-  authorization: String
-  schema_id: String
+  display: String
+  legal: String
+  web: String
+  email: String
+  additional: String
+
+}
+
+type ProvidedJudgement @entity{
+  id: ID!
+
+  method: String
+  callIndex: String
+  blockNumber: BigInt
+
+  targetId: String
+  judgement: String
   digest: String
 }
+
+type JudgementRequest @entity{
+  id: ID!
+
+  method: String
+  callIndex: String
+  blockNumber: BigInt
+
+  registrar: String
+}
+
