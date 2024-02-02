@@ -27,7 +27,7 @@ const project: SubstrateProject = {
   network: {
     /* The genesis hash of the network (hash of block 0) */
     chainId:
-      "0x3a137ff035562c623ff2b7726379a6d9d291c560596dde4518df93a46ff819c7",
+      "0x37d7b4a073d12e3f2168ebfdace9101eee512f2f50e4dfaaf396fdf9192a0cf1",
     /**
      * This endpoint must be a public non-pruned archive node
      * Public nodes may be rate limited, which can affect indexing speed
@@ -35,12 +35,12 @@ const project: SubstrateProject = {
      * You can get them from OnFinality for free https://app.onfinality.io
      * https://documentation.onfinality.io/support/the-enhanced-api-service
      */
-    endpoint: ["ws://host.docker.internal:9944"],
+    endpoint: ["wss://asset-token.cord.network"],
     // Optionally provide the HTTP endpoint of a full chain dictionary to speed up processing
     //dictionary: "https://api.subquery.network/sq/subquery/karura-dictionary",
-   // chaintypes: {
-   //   file: "./dist/chaintypes.js",
-   // },
+    // chaintypes: {
+    //   file: "./dist/chaintypes.js",
+    // },
   },
   dataSources: [
     {
