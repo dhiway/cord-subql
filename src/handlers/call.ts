@@ -59,6 +59,11 @@ async function traverExtrinsic(
       { call, extrinsic, rawCall: data, rawExtrinsic: raw }
     )
     */
+    
+    if (call.section === 'networkScore') {
+       logger.info("Scoring call");
+       await createScore(raw, id as string, data.method);
+      
     if (call.section === "networkScore") {
       logger.info("Scoring call");
       await createScore(raw, id as string);
@@ -71,6 +76,7 @@ async function traverExtrinsic(
     if (call.section === 'did') {
       logger.info("DID call")
       await indexDidCall(raw, id as string, data.method)
+
     }
     if (depth < 1 && section === 'utility' && (method === 'batch' || method === 'batchAll')) {
       const temp = args[0] as unknown as Vec<AnyCall>

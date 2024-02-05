@@ -84,12 +84,26 @@ type Account @entity {
 type Rating @entity {
   id: ID!
 
+  method: String
+  callIndex: String
+  blockNumber: BigInt
+  submitter: String
+  did: String
+  signature: String
+
+  identifier: String
   entityId: String
   providerId: String
-  totalCount: Int
-  totalRating: Int
+  countOfTxn: Int
+  totalEncodedRating: Int
   entityType: String
   ratingType: String
+  providerDid: String
+
+  digest: String
+  message_id: String
+  debit_ref_id: String
+  authorization: String
 }
 
 type Did @entity {
