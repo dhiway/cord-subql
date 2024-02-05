@@ -176,6 +176,21 @@ type Schema @entity {
   schema_id: String
 }
 
+type ChainSpace @entity {
+  id: ID!
+
+  callIndex: String
+  method: String
+  blockNumber: BigInt
+  submitter: String
+  signature: String
+  chainspace_id: String
+  authorization: String
+  space_code: String
+  space_id: String
+  delegate: String
+}
+
 type SetIdentity @entity {
   id: ID!
 
@@ -188,10 +203,9 @@ type SetIdentity @entity {
   web: String
   email: String
   additional: String
-
 }
 
-type ProvidedJudgement @entity{
+type ProvidedJudgement @entity {
   id: ID!
 
   method: String
@@ -203,7 +217,7 @@ type ProvidedJudgement @entity{
   digest: String
 }
 
-type JudgementRequest @entity{
+type JudgementRequest @entity {
   id: ID!
 
   method: String

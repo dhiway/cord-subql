@@ -11,6 +11,7 @@ import { indexAssetCall } from "./asset";
 import { indexIdentityCall } from "./identity";
 import { handleDidNameCall } from "./didName";
 import { createSchema } from "./schema";
+import { createChainSpace } from "./chainSpace";
 
 async function traverExtrinsic(
   extrinsic: Extrinsic,
@@ -88,10 +89,16 @@ async function traverExtrinsic(
       await createSchema(raw, call, id as string, data.method);
     }
     
+    if (call.section === "chainSpace") {
+      logger.info("ChainSpace call");
+      await createChainSpace(raw, call, id as string, data.method);
+    }
+    
     if (call.section === "identity") {
       logger.info(`${data.method}`);
       await indexIdentityCall(raw, id as string, data.method);
     }
+      
     if (call.section === "didName") {
       logger.info(`${data.method}`);
       await handleDidNameCall(raw, id as string, data.method);
