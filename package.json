@@ -32,6 +32,6 @@
     "chaintypes": "src/chaintypes.ts"
   },
   "dependencies": {
-    "@cord.network/sdk": "^0.9.1"
+    "@cord.network/sdk": "0.9.3-1develop1"
   }
 }

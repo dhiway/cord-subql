@@ -9,13 +9,10 @@ import { DispatchedEventData } from "./types";
 const dispatch = new Dispatcher<DispatchedEventData>();
 
 dispatch.batchRegist([
-
   //registry
   //{ key: 'schema-Create', handler: handleRegistryCreate },
-
   //schema
   //{ key: 'schema-Anchor', handler: handleSchemaAnchor },
-
   //stream
   //{ key: 'stream-Anchor', handler: handleStreamAnchor },
   //{ key: 'stream-Update', handler: handleStreamUpdate },
@@ -25,7 +22,7 @@ dispatch.batchRegist([
 export async function ensureEvent(event: SubstrateEvent) {
   const block = await ensureBlock(event.block);
   if (!block) {
-      return null;
+    return null;
   }
   const idx = event.idx;
   const recordId = `${block.number}-${idx}`;
@@ -45,14 +42,12 @@ export async function ensureEvent(event: SubstrateEvent) {
 
 export async function createEvent(event: SubstrateEvent) {
   const data = await ensureEvent(event);
-  if (!data)
-      return;
+  if (!data) return;
   const section = event.event.section;
   const method = event.event.method;
   const eventData = getKVData(event.event.data);
 
-  if (section === 'system' && method === 'ExtrinsicSuccess')
-     return;
+  if (section === "system" && method === "ExtrinsicSuccess") return;
 
   data.section = section;
   data.method = method;
@@ -66,7 +61,7 @@ export async function createEvent(event: SubstrateEvent) {
     data.extrinsicId = extrinsic.id;
   }
 
-// TODO: once we have separate handling of different events based on section and method, uncomment below
+  // TODO: once we have separate handling of different events based on section and method, uncomment below
   await dispatch.dispatch(`${section}-${data.method}`, {
     event: data,
     rawEvent: event,
