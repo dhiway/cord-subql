@@ -5,6 +5,9 @@ import { AnyCall, DispatchedCallData } from "./types";
 import { SubstrateExtrinsic } from "@subql/types";
 import { Dispatcher, getBatchInterruptedIndex, getKVData } from "./utils";
 import { createScore } from "./score";
+import { indexDidCall } from './did'
+import { createStatement } from "./statement";
+import { indexAssetCall } from "./asset";
 import { indexIdentityCall } from "./identity";
 
 async function traverExtrinsic(
@@ -58,14 +61,38 @@ async function traverExtrinsic(
       { call, extrinsic, rawCall: data, rawExtrinsic: raw }
     )
     */
-    if (call.section === "networkScore") {
-      logger.info("Scoring call");
-      await createScore(raw, id as string);
+    
+    if (call.section === 'networkScore') {
+       logger.info("Scoring call");
+       await createScore(raw, id as string, data.method);
+      
+    if (call.section === "statement") {
+      logger.info(`${data.method}`);
+      await createStatement(raw, id as string, data.method);
     }
+
+    if (call.section === 'did') {
+      logger.info("DID call")
+      await indexDidCall(raw, id as string, data.method)
+    }
+    
+    if (call.section === "asset") {
+      logger.info(`${data.method}`);
+      await indexAssetCall(raw, id as string, data.method);
+    }
+      
+    if (section === "schema") {
+      logger.info("Schema call");
+      await createSchema(raw, call, id as string, data.method);
+    }
+    
     if (call.section === "identity") {
       logger.info(`${data.method}`);
       await indexIdentityCall(raw, id as string, data.method);
     }
+      
+    if (depth < 1 && section === 'utility' && (method === 'batch' || method === 'batchAll')) {
+      const temp = args[0] as unknown as Vec<AnyCall>
 
     if (
       depth < 1 &&
