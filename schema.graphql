@@ -84,12 +84,84 @@ type Account @entity {
 type Rating @entity {
   id: ID!
 
+  method: String
+  callIndex: String
+  blockNumber: BigInt
+  submitter: String
+  did: String
+  signature: String
+
+  identifier: String
   entityId: String
   providerId: String
-  totalCount: Int
-  totalRating: Int
+  countOfTxn: Int
+  totalEncodedRating: Int
   entityType: String
   ratingType: String
+  providerDid: String
+
+  digest: String
+  message_id: String
+  debit_ref_id: String
+  authorization: String
+}
+
+type Did @entity {
+  id: ID!
+
+  method: String
+  blockNumber: BigInt
+  identifier: String
+  submitter: String
+  signature: String
+
+  keyAgreementKeys: String
+  assertionKey: String
+  delegationKey: String
+  serviceDetails: [String]
+}
+
+type DidSubmitCall @entity {
+  id: ID!
+  blockNumber: BigInt
+
+  didUri: String
+  callIndex: String
+  txCounter: Int
+  submitter: String
+  signature: String
+}
+
+type Asset @entity {
+  assetId: String
+  assetType: String
+  assetDesc: String
+  assetQty: Int
+  assetValue: Int
+  assetTag: String
+  assetMeta: String
+  assetOwner: String
+  assetIssuanceQty: Int
+  assetInstanceId: String
+  newAssetOwner: String
+
+  digest: String
+  authorization: String
+}
+
+type Statement @entity {
+  id: ID!
+
+  method: String
+  callIndex: String
+  did: String
+  blockNumber: BigInt
+  submitter: String
+  signature: String
+  statement_id: String
+  authorization: String
+  schema_id: String
+  digest: String
 }
 
 type Schema @entity {
