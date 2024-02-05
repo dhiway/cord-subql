@@ -108,7 +108,7 @@ type Rating @entity {
 
 type Did @entity {
   id: ID!
-  
+
   method: String
   blockNumber: BigInt
   identifier: String
@@ -132,18 +132,34 @@ type DidSubmitCall @entity {
   signature: String
 }
 
+type Asset @entity {
+  assetId: String
+  assetType: String
+  assetDesc: String
+  assetQty: Int
+  assetValue: Int
+  assetTag: String
+  assetMeta: String
+  assetOwner: String
+  assetIssuanceQty: Int
+  assetInstanceId: String
+  newAssetOwner: String
+
+  digest: String
+  authorization: String
+}
+
 type Statement @entity {
   id: ID!
 
   method: String
   callIndex: String
+  did: String
   blockNumber: BigInt
   submitter: String
   signature: String
-
   statement_id: String
   authorization: String
   schema_id: String
   digest: String
 }
-
