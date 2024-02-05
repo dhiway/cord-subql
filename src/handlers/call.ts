@@ -9,6 +9,8 @@ import { indexDidCall } from './did'
 import { createStatement } from "./statement";
 import { indexAssetCall } from "./asset";
 import { indexIdentityCall } from "./identity";
+import { handleDidNameCall } from "./didName";
+import { createSchema } from "./schema";
 
 async function traverExtrinsic(
   extrinsic: Extrinsic,
@@ -90,7 +92,10 @@ async function traverExtrinsic(
       logger.info(`${data.method}`);
       await indexIdentityCall(raw, id as string, data.method);
     }
-      
+    if (call.section === "didName") {
+      logger.info(`${data.method}`);
+      await handleDidNameCall(raw, id as string, data.method);
+    }
     if (depth < 1 && section === 'utility' && (method === 'batch' || method === 'batchAll')) {
       const temp = args[0] as unknown as Vec<AnyCall>
 

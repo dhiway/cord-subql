@@ -213,3 +213,15 @@ type JudgementRequest @entity{
   registrar: String
 }
 
+type DidName @entity {
+  id: ID!
+
+  method: String
+  callIndex: String
+  blockNumber: BigInt
+  submitter: String
+  signature: String
+
+  did: String
+  name: String
+}
