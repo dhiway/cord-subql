@@ -133,6 +133,9 @@ type DidSubmitCall @entity {
 }
 
 type Asset @entity {
+  id: ID!
+  method: String
+  callIndex: String
   assetId: String
   assetType: String
   assetDesc: String
@@ -144,6 +147,10 @@ type Asset @entity {
   assetIssuanceQty: Int
   assetInstanceId: String
   newAssetOwner: String
+  blockNumber: BigInt
+  did: String
+  submitter: String
+  signature: String
 
   digest: String
   authorization: String
