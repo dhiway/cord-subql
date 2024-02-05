@@ -45,7 +45,7 @@ type Call @entity {
   id: ID!
 
   section: String
-  method: String @index
+  method: String
   args: [KVData]
   timestamp: Date
   isSuccess: Boolean
@@ -84,12 +84,96 @@ type Account @entity {
 type Rating @entity {
   id: ID!
 
+  method: String
+  callIndex: String
+  blockNumber: BigInt
+  submitter: String
+  did: String
+  signature: String
+
+  identifier: String
   entityId: String
   providerId: String
-  totalCount: Int
-  totalRating: Int
+  countOfTxn: Int
+  totalEncodedRating: Int
   entityType: String
   ratingType: String
+  providerDid: String
+
+  digest: String
+  message_id: String
+  debit_ref_id: String
+  authorization: String
+}
+
+type Did @entity {
+  id: ID!
+
+  method: String
+  blockNumber: BigInt
+  identifier: String
+  submitter: String
+  signature: String
+
+  keyAgreementKeys: String
+  assertionKey: String
+  delegationKey: String
+  serviceDetails: [String]
+}
+
+type DidSubmitCall @entity {
+  id: ID!
+  blockNumber: BigInt
+
+  didUri: String
+  callIndex: String
+  txCounter: Int
+  submitter: String
+  signature: String
+}
+
+type Asset @entity {
+  assetId: String
+  assetType: String
+  assetDesc: String
+  assetQty: Int
+  assetValue: Int
+  assetTag: String
+  assetMeta: String
+  assetOwner: String
+  assetIssuanceQty: Int
+  assetInstanceId: String
+  newAssetOwner: String
+
+  digest: String
+  authorization: String
+}
+
+type Statement @entity {
+  id: ID!
+
+  method: String
+  callIndex: String
+  did: String
+  blockNumber: BigInt
+  submitter: String
+  signature: String
+  statement_id: String
+  authorization: String
+  schema_id: String
+  digest: String
+}
+
+type Schema @entity {
+  id: ID!
+
+  callIndex: String
+  method: String
+  blockNumber: BigInt
+  submitter: String
+  signature: String
+  authorization: String
+  schema_id: String
 }
 
 type ChainSpace @entity {
@@ -105,4 +189,53 @@ type ChainSpace @entity {
   space_code: String
   space_id: String
   delegate: String
+}
+
+type SetIdentity @entity {
+  id: ID!
+
+  method: String
+  callIndex: String
+  blockNumber: BigInt
+
+  display: String
+  legal: String
+  web: String
+  email: String
+  additional: String
+}
+
+type ProvidedJudgement @entity {
+  id: ID!
+
+  method: String
+  callIndex: String
+  blockNumber: BigInt
+
+  targetId: String
+  judgement: String
+  digest: String
+}
+
+type JudgementRequest @entity {
+  id: ID!
+
+  method: String
+  callIndex: String
+  blockNumber: BigInt
+
+  registrar: String
+}
+
+type DidName @entity {
+  id: ID!
+
+  method: String
+  callIndex: String
+  blockNumber: BigInt
+  submitter: String
+  signature: String
+
+  did: String
+  name: String
 }
