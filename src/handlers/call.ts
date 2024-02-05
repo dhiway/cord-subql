@@ -3,8 +3,9 @@ import { Call, Extrinsic } from "../types";
 import { AnyCall, DispatchedCallData } from "./types";
 
 import { SubstrateExtrinsic } from "@subql/types";
-import { Dispatcher, getBatchInterruptedIndex, getKVData } from "./utils";
-import { createScore } from "./score";
+import { Dispatcher, getBatchInterruptedIndex, getKVData } from './utils';
+import { createScore } from './score';
+import { indexDidCall } from './did'
 import { createStatement } from "./statement";
 
 async function traverExtrinsic(
@@ -66,6 +67,13 @@ async function traverExtrinsic(
       logger.info(`${data.method}`);
       await createStatement(raw, id as string, data.method);
     }
+
+    if (call.section === 'did') {
+      logger.info("DID call")
+      await indexDidCall(raw, id as string, data.method)
+    }
+    if (depth < 1 && section === 'utility' && (method === 'batch' || method === 'batchAll')) {
+      const temp = args[0] as unknown as Vec<AnyCall>
 
     if (
       depth < 1 &&
