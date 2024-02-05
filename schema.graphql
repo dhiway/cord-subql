@@ -163,3 +163,15 @@ type Statement @entity {
   schema_id: String
   digest: String
 }
+
+type Schema @entity {
+  id: ID!
+
+  callIndex: String
+  method: String
+  blockNumber: BigInt
+  submitter: String
+  signature: String
+  authorization: String
+  schema_id: String
+}

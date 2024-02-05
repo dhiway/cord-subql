@@ -3,12 +3,14 @@ import { Call, Extrinsic } from "../types";
 import { AnyCall, DispatchedCallData } from "./types";
 
 import { SubstrateExtrinsic } from "@subql/types";
-
+import { Dispatcher, getBatchInterruptedIndex, getKVData } from "./utils";
+import { createScore } from "./score";
 import { Dispatcher, getBatchInterruptedIndex, getKVData } from './utils';
 import { createScore } from './score';
 import { indexDidCall } from './did'
 import { createStatement } from "./statement";
 import { indexAssetCall } from "./asset";
+
 
 async function traverExtrinsic(
   extrinsic: Extrinsic,
@@ -79,6 +81,11 @@ async function traverExtrinsic(
     if (call.section === "asset") {
       logger.info(`${data.method}`);
       await indexAssetCall(raw, id as string, data.method);
+    }
+      
+    if (section === "schema") {
+      logger.info("Schema call");
+      await createSchema(raw, call, id as string, data.method);
     }
     
     if (depth < 1 && section === 'utility' && (method === 'batch' || method === 'batchAll')) {
