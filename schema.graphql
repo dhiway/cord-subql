@@ -246,3 +246,13 @@ type DidName @entity {
   did: String
   name: String
 }
+
+type NetworkMembership @entity {
+  id: ID!
+
+  method: String
+  callIndex: String
+  blockNumber: BigInt
+  networkmembership_Id: String
+  member: String
+}
