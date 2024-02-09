@@ -13,13 +13,13 @@ export async function createNetworkMembership(
   // let chainSpaceId = JSON.parse(JSON.stringify(extrinsic.events))[0].event
   //   .data[0];
 
-  logger.info(
-    `\n\n Network data \n Arrayed: \n ${JSON.stringify(
-      arrayed.args
-    )}\n extrinsic \n ${JSON.stringify(
-      extrinsic.block.events
-    )} \n\n ${JSON.stringify(extrinsic.events)}`
-  );
+  // logger.info(
+  //   `\n\n Network data \n Arrayed: \n ${JSON.stringify(
+  //     arrayed.args
+  //   )}\n extrinsic \n ${JSON.stringify(
+  //     extrinsic.block.events
+  //   )} \n\n ${JSON.stringify(extrinsic.events)}`
+  // );
   // let networkMembership = new ChainSpace(id);
   //
   // networkMembership.method = method;

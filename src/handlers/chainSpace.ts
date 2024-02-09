@@ -15,27 +15,28 @@ export async function createChainSpace(
   let chainspace = new ChainSpace(id);
 
   chainspace.method = method;
-  chainspace.callIndex = arrayed.args.did_call.call.callIndex;
   chainspace.chainspace_id = chainSpaceId;
   chainspace.blockNumber = extrinsic.block.block.header.number.toBigInt();
   chainspace.signature = JSON.stringify(arrayed.args.signature);
 
   if (method === "create") {
-    chainspace.space_code = arrayed.args.did_call.call.args.space_code;
+    chainspace.callIndex = arrayed.args.did_call?.call.callIndex;
+    chainspace.space_id = chainSpaceId;
+    chainspace.space_code = arrayed.args.did_call?.call.args.space_code;
   }
 
   if (method === "addDelegate") {
-    chainspace.space_id = arrayed.args.did_call.call.args.space_id;
-    chainspace.delegate = arrayed.args.did_call.call.args.delegate;
-    chainspace.authorization = arrayed.args.did_call.call.args.authorization;
+    chainspace.callIndex = arrayed.args.did_call?.call.callIndex;
+    chainspace.space_id = arrayed.args.did_call?.call.args.space_id;
+    chainspace.delegate = arrayed.args.did_call?.call.args.delegate;
+    chainspace.authorization = arrayed.args.did_call?.call.args.authorization;
     chainspace.submitter = arrayed.args.did_call.submitter;
   }
 
   if (method === "approve") {
-    // ToDo:
-    // Develop a demo script within the GitHub repository at github.com/dhiway/cord.js which
-    // calls this method. Execute the script to capture the extrinsic information, analyze the obtained data,
-    // and complete the implementation.
+    logger.info(`APPROVED CHAINSPACE: \n ${JSON.stringify(arrayed)}`);
+    chainspace.space_id = arrayed.args.call.args.space_id;
+    chainspace.callIndex = arrayed.args.call.callIndex;
   }
 
   if (method === "archive") {
