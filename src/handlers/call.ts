@@ -126,12 +126,8 @@ async function traverExtrinsic(
       await createChainSpace(raw, call, id as string, data.method);
     }
     if (section === "networkMembership") {
+      logger.info("NetworkMembership call");
       await createNetworkMembership(raw, call, id as string, data.method);
-      // logger.info(
-      //   ` \n\n\n In Calls - ${JSON.stringify(
-      //     getKVData(data.args, data.argsDef)
-      //   )} \n\n\n`
-      // );
     }
 
     if (call.section === "identity") {

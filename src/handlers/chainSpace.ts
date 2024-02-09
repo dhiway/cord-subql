@@ -34,7 +34,6 @@ export async function createChainSpace(
   }
 
   if (method === "approve") {
-    logger.info(`APPROVED CHAINSPACE: \n ${JSON.stringify(arrayed)}`);
     chainspace.space_id = arrayed.args.call.args.space_id;
     chainspace.callIndex = arrayed.args.call.callIndex;
   }
