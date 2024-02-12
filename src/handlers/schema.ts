@@ -19,10 +19,6 @@ export async function createSchema(
   schema.blockNumber = extrinsic.block.block.header.number.toBigInt();
   schema.signature = JSON.stringify(arrayed.args.signature);
 
-  logger.info(
-    `\n ARRAYED: \n ${JSON.stringify(arrayed)} \n\n Method: ${method}`
-  );
-
   if (method === "create") {
     schema.submitter = arrayed.args.did_call.submitter;
     schema.authorization = arrayed.args.did_call.call.args.authorization;

@@ -12,13 +12,14 @@ import { indexIdentityCall } from "./identity";
 import { handleDidNameCall } from "./didName";
 import { createSchema } from "./schema";
 import { createChainSpace } from "./chainSpace";
+import { createNetworkMembership } from "./networkMembership";
 
 export async function createCalls(
   extrinsic: Extrinsic,
   raw: SubstrateExtrinsic
 ) {
   const calls = await traverExtrinsic(extrinsic, raw);
-  logger.info(`Calls: ${calls}`);
+  // logger.info(`Calls: ${calls}`);
   await Promise.all(calls.map(async (item) => item.save()));
 }
 
@@ -59,8 +60,17 @@ async function traverExtrinsic(
       // logger.info(`DidSubmitCall:  ${temp}`);
       await inner(temp, id, 1, false, depth + 1);
     }
-    const call = new Call(id);
 
+    if (section === "sudo") {
+      const temp = args[0] as unknown as AnyCall;
+      // logger.info(
+      //   `SUDO TEMP ARGS \n ${JSON.stringify(args)} \n call: ${temp.section} - ${
+      //     temp.method
+      //   } \n  ${JSON.stringify(temp)}`
+      // );
+      await inner(temp, id, 1, false, depth + 1);
+    }
+    const call = new Call(id);
     call.method = method;
     call.section = section;
     call.args = getKVData(data.args, data.argsDef);
@@ -114,6 +124,10 @@ async function traverExtrinsic(
     if (call.section === "chainSpace") {
       logger.info("ChainSpace call");
       await createChainSpace(raw, call, id as string, data.method);
+    }
+    if (section === "networkMembership") {
+      logger.info("NetworkMembership call");
+      await createNetworkMembership(raw, call, id as string, data.method);
     }
 
     if (call.section === "identity") {
