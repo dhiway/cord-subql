@@ -256,3 +256,32 @@ type NetworkMembership @entity {
   networkmembership_Id: String
   member: String
 }
+
+type Registry @entity {
+  id: ID!
+
+  method: String
+  blockNumber: BigInt
+  registry_id: String
+  schema_id: String
+  blob: String
+  submitter: String
+  state: String
+  authorization: String
+  digest: String
+}
+
+type Entries @entity {
+  id: ID!
+
+  method: String
+  blockNumber: BigInt
+  registry_id: String
+  registry_entry_id: String
+  blob: String
+  submitter: String
+  state: String
+  authorization: String
+  digest: String
+
+}

@@ -13,6 +13,8 @@ import { handleDidNameCall } from "./didName";
 import { createSchema } from "./schema";
 import { createChainSpace } from "./chainSpace";
 import { createNetworkMembership } from "./networkMembership";
+import { handleRegistry  } from "./registries"
+import { handleRegistryEntries } from "./entries"
 
 export async function createCalls(
   extrinsic: Extrinsic,
@@ -138,6 +140,16 @@ async function traverExtrinsic(
     if (call.section === "didName") {
       logger.info(`${data.method}`);
       await handleDidNameCall(raw, id as string, data.method);
+    }
+
+    if (call.section === "registries") {
+      logger.info(`${data.method}`);
+      await handleRegistry(raw, id as string, data.method);
+    }
+
+    if (call.section === "entries") {
+      logger.info(`${data.method}`);
+      await handleRegistryEntries(raw, id as string, data.method);
     }
 
     if (

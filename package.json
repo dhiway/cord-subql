@@ -7,7 +7,7 @@
     "build": "subql build",
     "codegen": "subql codegen",
     "start:docker": "docker-compose pull && docker-compose up --remove-orphans",
-    "dev": "subql codegen && subql build && docker-compose pull && docker-compose up --remove-orphans",
+    "dev": "subql codegen && subql build && docker compose pull && docker compose up --remove-orphans",
     "prepack": "rm -rf dist && npm run build",
     "test": "subql build && subql-node test"
   },
@@ -26,12 +26,15 @@
     "@subql/node": "latest",
     "@subql/testing": "latest",
     "@subql/types": "latest",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "@subql/node-core": "^15.0.1"
+
   },
   "exports": {
     "chaintypes": "src/chaintypes.ts"
   },
   "dependencies": {
-    "@cord.network/sdk": "0.9.3-1develop1"
+    "@cord.network/type-definitions": "^0.9.4",
+    "@subql/node-core": "^15.0.1"
   }
 }

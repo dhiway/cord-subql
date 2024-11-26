@@ -27,7 +27,7 @@ const project: SubstrateProject = {
   network: {
     /* The genesis hash of the network (hash of block 0) */
     chainId:
-      "0x3a137ff035562c623ff2b7726379a6d9d291c560596dde4518df93a46ff819c7",
+      "0xb8c0f2929dc429cac419217eb6eb232a86e35b9846220c7991ae2f0ba15b5c4f",
     /**
      * This endpoint must be a public non-pruned archive node
      * Public nodes may be rate limited, which can affect indexing speed
