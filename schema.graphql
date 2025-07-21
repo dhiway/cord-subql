@@ -1,7 +1,3 @@
-# To improve query performance, we strongly suggest adding indexes to any field that you plan to filter or sort by
-# Add the `@index` or `@index(unique: true)` annotation after any non-key field
-# https://academy.subquery.network/build/graphql.html#indexing-by-non-primary-key-field
-
 type KVData @jsonField {
   key: String
   value: String
@@ -10,21 +6,18 @@ type KVData @jsonField {
 
 type Block @entity {
   id: ID!
-
   number: BigInt
   timestamp: Date
   parentHash: String
   specVersion: String
   stateRoot: String
   extrinsicRoot: String
-
   extrinsics: [Extrinsic] @derivedFrom(field: "block")
   events: [Event] @derivedFrom(field: "block")
 }
 
 type Extrinsic @entity {
   id: ID!
-
   method: String
   section: String
   args: [KVData]
@@ -35,7 +28,6 @@ type Extrinsic @entity {
   tip: String
   isSigned: Boolean
   isSuccess: Boolean
-
   block: Block
   events: [Event] @derivedFrom(field: "extrinsic")
   calls: [Call] @derivedFrom(field: "extrinsic")
@@ -43,28 +35,23 @@ type Extrinsic @entity {
 
 type Call @entity {
   id: ID!
-
   section: String
   method: String
   args: [KVData]
   timestamp: Date
   isSuccess: Boolean
-
   signer: Account
   extrinsic: Extrinsic
   parentCall: Call
-
   calls: [Call] @derivedFrom(field: "parentCall")
 }
 
 type Event @entity {
   id: ID!
-
   index: Int
   section: String
   method: String
   data: [KVData]
-
   timestamp: Date
   blockNumber: BigInt
   block: Block
@@ -73,186 +60,30 @@ type Event @entity {
 
 type Account @entity {
   id: ID!
-
   txCount: BigInt
   createAtBlock: Block
-
   extrinsics: [Extrinsic] @derivedFrom(field: "signer")
   calls: [Call] @derivedFrom(field: "signer")
 }
 
-type Rating @entity {
-  id: ID!
-
-  method: String
-  callIndex: String
-  blockNumber: BigInt
-  submitter: String
-  did: String
-  signature: String
-
-  identifier: String
-  entityId: String
-  providerId: String
-  countOfTxn: Int
-  totalEncodedRating: Int
-  entityType: String
-  ratingType: String
-  providerDid: String
-
-  digest: String
-  message_id: String
-  debit_ref_id: String
-  authorization: String
-}
-
-type Did @entity {
-  id: ID!
-
-  method: String
-  blockNumber: BigInt
-  identifier: String
-  submitter: String
-  signature: String
-
-  keyAgreementKeys: String
-  assertionKey: String
-  delegationKey: String
-  serviceDetails: [String]
-}
-
-type DidSubmitCall @entity {
-  id: ID!
-  blockNumber: BigInt
-
-  didUri: String
-  callIndex: String
-  txCounter: Int
-  submitter: String
-  signature: String
-}
-
-type Asset @entity {
-  id: ID!
-  method: String
-  callIndex: String
-  assetId: String
-  assetType: String
-  assetDesc: String
-  assetQty: Int
-  assetValue: Int
-  assetTag: String
-  assetMeta: String
-  assetOwner: String
-  assetIssuanceQty: Int
-  assetInstanceId: String
-  newAssetOwner: String
-  blockNumber: BigInt
-  did: String
-  submitter: String
-  signature: String
-
-  digest: String
-  authorization: String
-}
-
-type Statement @entity {
-  id: ID!
-
-  method: String
-  callIndex: String
-  did: String
-  blockNumber: BigInt
-  submitter: String
-  signature: String
-  statement_id: String
-  authorization: String
-  schema_id: String
-  digest: String
-}
-
-type Schema @entity {
-  id: ID!
-
-  callIndex: String
-  method: String
-  blockNumber: BigInt
-  submitter: String
-  signature: String
-  authorization: String
-  schema_id: String
-}
-
-type ChainSpace @entity {
-  id: ID!
-
-  callIndex: String
-  method: String
-  blockNumber: BigInt
-  submitter: String
-  signature: String
-  chainspace_id: String
-  authorization: String
-  space_code: String
-  space_id: String
-  delegate: String
-}
-
-type SetIdentity @entity {
-  id: ID!
-
-  method: String
-  callIndex: String
-  blockNumber: BigInt
-
-  display: String
-  legal: String
-  web: String
-  email: String
-  additional: String
-}
-
-type ProvidedJudgement @entity {
-  id: ID!
-
-  method: String
-  callIndex: String
-  blockNumber: BigInt
-
-  targetId: String
-  judgement: String
-  digest: String
-}
-
-type JudgementRequest @entity {
-  id: ID!
-
-  method: String
-  callIndex: String
-  blockNumber: BigInt
-
-  registrar: String
-}
-
-type DidName @entity {
-  id: ID!
-
+type Profile @entity {
+  id: ID! # Call ID
   method: String
   callIndex: String
   blockNumber: BigInt
   submitter: String
   signature: String
-
-  did: String
-  name: String
+  creator: Account! # AccountId that created the profile
+  profileData: [KVData] # Key-value pairs from ProfileData storage
 }
 
-type NetworkMembership @entity {
-  id: ID!
-
+type ProfileKeyRotation @entity {
+  id: ID! # Call ID + block number
   method: String
   callIndex: String
   blockNumber: BigInt
-  networkmembership_Id: String
-  member: String
+  submitter: String
+  signature: String
+  oldKey: Account! # Original AccountId
+  newKey: Account! # New AccountId
 }
