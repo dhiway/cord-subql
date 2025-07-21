@@ -1,16 +1,18 @@
-version: "3"
+version: '4'
 
 services:
   postgres:
-    build:
-      context: .
-      dockerfile: ./docker/pg-Dockerfile
+    image: postgres:16
+    container_name: cord-subql-postgres-1
     ports:
       - 5432:5432
     volumes:
       - .data/postgres16:/var/lib/postgresql/data
+      - ./docker/init-btree.sh:/docker-entrypoint-initdb.d/init-btree.sh
     environment:
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cordsubql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -19,45 +21,46 @@ services:
 
   subquery-node:
     image: subquerynetwork/subql-node-substrate:latest
+    container_name: cord-subql-subquery-node-1
     depends_on:
-      "postgres":
+      postgres:
         condition: service_healthy
     restart: always
     environment:
       DB_USER: postgres
       DB_PASS: postgres
-      DB_DATABASE: postgres
+      DB_DATABASE: cordsubql
       DB_HOST: postgres
       DB_PORT: 5432
     volumes:
       - ./:/app
     command:
-      - ${SUB_COMMAND:-} # set SUB_COMMAND env variable to "test" to run tests
       - -f=/app
       - --db-schema=app
       - --workers=4
       - --batch-size=30
       - --unfinalized-blocks=true
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://subquery-node:3000/ready"]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/ready"]
       interval: 3s
       timeout: 5s
       retries: 10
 
   graphql-engine:
     image: onfinality/subql-query:latest
+    container_name: cord-subql-graphql-engine-1
     ports:
       - 3000:3000
     depends_on:
-      "postgres":
+      postgres:
         condition: service_healthy
-      "subquery-node":
+      subquery-node:
         condition: service_healthy
     restart: always
     environment:
       DB_USER: postgres
       DB_PASS: postgres
-      DB_DATABASE: postgres
+      DB_DATABASE: cordsubql
       DB_HOST: postgres
       DB_PORT: 5432
     command:
