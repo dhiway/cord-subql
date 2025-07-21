@@ -1,5 +1,5 @@
 import { typesBundle } from "@cord.network/type-definitions";
 
-export default {
-  typesBundle: typesBundle,
-};
+// export default {
+//   typesBundle: typesBundle,
+// };
